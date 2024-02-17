@@ -141,7 +141,7 @@ public:
     /**
      * @brief Checks if the player is knocked out (has 0 hit points).
      */
-    void isKnockedOut();
+    bool isKnockedOut();
 
     /**
      * @brief Adds coins to the player's inventory.
