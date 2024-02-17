@@ -3,8 +3,8 @@
 #include <string>
 #include <iostream>
 #include "Player.h"
-//#include "Card.h"
-//#include "Mtmchkin.h"
+#include "Card.h"
+#include "Mtmchkin.h"
 
 bool testMtmchkin(){ // test number 3
     Card cards[4];

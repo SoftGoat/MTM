@@ -37,7 +37,7 @@ public:
     void buff(int attack);
     void heal(int potion);
     void damage(int dmg);
-    void isKnockOut();
+    void isKnockedOut();
     void addCoins(int money);
     bool pay(int transaction);
     int getAttackStrength();
@@ -214,7 +214,7 @@ void Player::damage(int attack){
     this->hp = temp < MINIMUM_HP ? MINIMUM_HP : temp;
 }
 
-void Player::isKnockOut(){
+void Player::isKnockedOut(){
     if(this->hp == MINIMUM_HP){  // shoudnt be sincero that hp < MINIMUM_HP
         std::cout << "Player is knocked out";
     }
