@@ -21,16 +21,17 @@ public:
     void printPlayerInfo(const char* name, int level, int force, int hp, int coins);
     void applyEncounter(Player& player) const;
     void printInfo() const;
-
+    Card(const Card&) = default;
+    ~Card() = default;
+    Card& operator=(const Card& other) = default;
 private:
-
 
 
 };
 
 
 
-Card::Card(CardType type, const CardStats& stats){   // Battle, Buff, Heal, Treasure. 
+Card::Card(CardType type, const CardStats& stats){  
     m_effect = type;
 
     if (type == CardType::Battle) {
@@ -54,6 +55,24 @@ Card::Card(CardType type, const CardStats& stats){   // Battle, Buff, Heal, Trea
         std::cout << "Invalid argument" << std::endl;
     }
 }
+
+Card::Card(const Card& other){
+    this->m_effect = other.m_effect;
+    this->m_stats= other.m_stats;
+}
+
+Card& Card::operator=(const Card& other){
+    if (this != &other) { // Check for self-assignment
+        this->m_effect = other.m_effect;
+        this->m_stats = other.m_stats;
+    }
+    return *this;
+}
+
+Card:: ~Card() {
+        // No explicit cleanup needed for member variables
+}
+
 
 
 void Card::applyEncounter(Player& player) const{
@@ -136,7 +155,3 @@ void Card::printTreasureCardInfo(const CardStats& card)const {
 
 
        
-    
-
-                                         
-
