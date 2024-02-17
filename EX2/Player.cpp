@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstring>
+#include "Player.h"
 class Player
 {
 private:
@@ -21,7 +22,6 @@ private:
     const int MINIMUM_HP = 0;
     const int MINIMUM_MAXHP = 1;
     const int MINIMUM_COINS = 0;
-    //test someting
 public:
     Player(char* name_, int level, int force, int hp, int maxHp, int coins);
     Player(char* name_, int force, int maxHp);
