@@ -9,10 +9,7 @@ class Card
 private:
     CardType m_effect;
     CardStats m_stats;
-    void printBattleCardInfo(const CardStats& card)const;
-    void printBuffCardInfo(const CardStats& card)const;
-    void printHealCardInfo(const CardStats& card)const;
-    void printTreasureCardInfo(const CardStats& card)const;
+
 
 
 public:
@@ -119,39 +116,3 @@ void Card::printInfo() const {
 }
 
 
-
-
-void Card::printBattleCardInfo(const CardStats& card)const {
-    std::cout << "Card drawn:\n" << std::endl;
-    std::cout << "Type: Battle\n"<< std::endl;
-    std::cout << "Force: " << card.force<<"\n"<<std::endl;
-    std::cout << "Profit (on win): " << card.loot<<"\n"<< std::endl;
-    std::cout << "Damage taken (on loss): " << card.hpLossOnDefeat<<"\n"<< std::endl;
-    std::cout << "------------------------\n" << std::endl;
-}
-void Card::printBuffCardInfo(const CardStats& card)const {
-    std::cout << "Card drawn:\n" << std::endl;
-    std::cout << "Type: Buff\n"<< std::endl;
-    std::cout << "Buff: " << card.buff<<"\n"<<std::endl;
-    std::cout << "Cost: " << card.cost<<"\n"<< std::endl;
-    std::cout << "------------------------\n" << std::endl;
-
-}
-void Card::printHealCardInfo(const CardStats& card)const {
-    std::cout << "Card drawn:\n" << std::endl;
-    std::cout << "Type: Heal\n"<< std::endl;
-    std::cout << "Heal: " << card.heal<<"\n"<<std::endl;
-    std::cout << "Cost: " << card.cost<<"\n"<< std::endl;
-    std::cout << "------------------------\n" << std::endl;
-
-}
-void Card::printTreasureCardInfo(const CardStats& card)const {
-    std::cout << "Card drawn:\n" << std::endl;
-    std::cout << "Type: Treasure\n"<< std::endl;
-    std::cout << "Loot: " << card.loot<<"\n"<<std::endl;
-    std::cout << "------------------------\n" << std::endl;
-}
-
-
-
-       
