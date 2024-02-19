@@ -1,7 +1,3 @@
-//
-// Created by Daniel_Meents on 07/04/2022.
-//
-
 #ifndef EX2_GAME_H
 #define EX2_GAME_H
 #include <iostream>
@@ -65,7 +61,6 @@ public:
 	
     Mtmchkin(const Mtmchkin& mtmchkin);
 
-    Mtmchkin& operator=(const Mtmchkin& other);
 
 private:
     Player m_player;

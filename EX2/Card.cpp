@@ -4,34 +4,7 @@
 #include "utilities.h"
 #include "Player.h"
 
-class Card
-{
-private:
-    CardType m_effect;
-    CardStats m_stats;
-    void printBattleCardInfo(const CardStats& card)const;
-    void printBuffCardInfo(const CardStats& card)const;
-    void printHealCardInfo(const CardStats& card)const;
-    void printTreasureCardInfo(const CardStats& card)const;
-
-
-public:
-    Card(CardType type, const CardStats& stats);
-    bool inputValidation(char*& name, int& level, int& force, int& hp, int& maxHp, int& coins);
-    void printPlayerInfo(const char* name, int level, int force, int hp, int coins);
-    void applyEncounter(Player& player) const;
-    void printInfo() const;
-    Card(const Card&) = default;
-    ~Card() = default;
-    Card& operator=(const Card& other) = default;
-private:
-
-
-};
-
-
-
-Card::Card(CardType type, const CardStats& stats){  
+Card::Card(CardType type, const CardStats &stats) {
     m_effect = type;
 
     if (type == CardType::Battle) {
@@ -56,25 +29,6 @@ Card::Card(CardType type, const CardStats& stats){
     }
 }
 
-Card::Card(const Card& other){
-    this->m_effect = other.m_effect;
-    this->m_stats= other.m_stats;
-}
-
-Card& Card::operator=(const Card& other){
-    if (this != &other) { // Check for self-assignment
-        this->m_effect = other.m_effect;
-        this->m_stats = other.m_stats;
-    }
-    return *this;
-}
-
-Card:: ~Card() {
-        // No explicit cleanup needed for member variables
-}
-
-
-
 void Card::applyEncounter(Player& player) const{
 
     if (m_effect == CardType::Battle) {
@@ -92,8 +46,7 @@ void Card::applyEncounter(Player& player) const{
     } 
     else if (m_effect == CardType::Heal&&player.pay(m_stats.cost)) { // payment was successful and its a heal card
         player.heal(m_stats.heal);
-    }
-     else if (m_effect == CardType::Treasure) {
+    } else if (m_effect == CardType::Treasure) {
         player.addCoins(m_stats.loot);
        
     } 
@@ -119,7 +72,7 @@ void Card::printInfo() const {
 }
 
 
-
+/*
 
 void Card::printBattleCardInfo(const CardStats& card)const {
     std::cout << "Card drawn:\n" << std::endl;
@@ -150,7 +103,7 @@ void Card::printTreasureCardInfo(const CardStats& card)const {
     std::cout << "Type: Treasure\n"<< std::endl;
     std::cout << "Loot: " << card.loot<<"\n"<<std::endl;
     std::cout << "------------------------\n" << std::endl;
-}
+}*/
 
 
 

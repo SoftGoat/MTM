@@ -13,18 +13,16 @@ private:
     int maxHp; /**< The maximum hit points of the player */
     int coins; /**< The number of coins the player has */
 
-    static const char* DEFAULT_NAME; /**< The default name for a player */
-    static const int DEFAULT_LEVEL; /**< The default level for a player */
-    static const int DEFAULT_FORCE; /**< The default force for a player */
-    static const int DEFAULT_HP; /**< The default hit points for a player */
-    static const int DEFAULT_MAXHP; /**< The default maximum hit points for a player */
-    static const int DEFAULT_COINS; /**< The default number of coins for a player */
-    static const int MAXIMUM_LEVEL; /**< The maximum level a player can reach */
-    static const int MINIMUM_LEVEL; /**< The minimum level a player can have */
-    static const int MINIMUM_FORCE; /**< The minimum force a player can have */
-    static const int MINIMUM_HP; /**< The minimum hit points a player can have */
-    static const int MINIMUM_MAXHP; /**< The minimum maximum hit points a player can have */
-    static const int MINIMUM_COINS; /**< The minimum number of coins a player can have */
+    constexpr static const char *DEFAULT_NAME = "ZoGi"; /**< The default name for a player */
+    static const int DEFAULT_LEVEL = 1; /**< The default level for a player */
+    static const int DEFAULT_FORCE = 5; /**< The default force for a player */
+    static const int DEFAULT_MAXHP = 100; /**< The default maximum hit points for a player */
+    static const int DEFAULT_COINS = 0; /**< The default number of coins for a player */
+    static const int MAXIMUM_LEVEL = 10; /**< The maximum level a player can reach */
+    static const int MINIMUM_LEVEL = 1; /**< The minimum level a player can have */
+    static const int MINIMUM_FORCE = 0; /**< The minimum force a player can have */
+    static const int MINIMUM_HP = 0; /**< The minimum hit points a player can have */
+    static const int MINIMUM_COINS = 0; /**< The minimum number of coins a player can have */
 
     /**
      * @brief Validates the input values for the player attributes.
@@ -36,7 +34,7 @@ private:
      * @param coins The number of coins the player has.
      * @return True if the input values are valid, false otherwise.
      */
-    bool inputValidation(char*& name, int& level, int& force, int& hp, int& maxHp, int& coins);
+    bool inputValidation(char *name, int &level, int &force, int &hp, int &maxHp, int &coins);
 
     /**
      * @brief Prints the player's information.
@@ -46,7 +44,6 @@ private:
      * @param hp The hit points of the player.
      * @param coins The number of coins the player has.
      */
-    void printPlayerInfo(const char* name, int level, int force, int hp, int coins);
 
 public:
     /**
@@ -63,7 +60,7 @@ public:
      * @param maxHp The maximum hit points of the player.
      * @param coins The number of coins the player has.
      */
-    Player(char* name_, int level, int force, int hp, int maxHp, int coins);
+    Player(const char *name_, int level, int force, int hp, int maxHp, int coins);
 
     /**
      * @brief Constructor with parameters.
@@ -71,20 +68,20 @@ public:
      * @param force The force of the player.
      * @param maxHp The maximum hit points of the player.
      */
-    Player(char* name_, int force, int maxHp);
+    Player(const char *name_, int force, int maxHp);
 
     /**
      * @brief Constructor with parameters.
      * @param name_ The name of the player.
      * @param maxHp The maximum hit points of the player.
      */
-    Player(char* name_, int maxHp);
+    Player(const char *name_, int maxHp);
 
     /**
      * @brief Constructor with parameters.
      * @param name_ The name of the player.
      */
-    Player(char* name_);
+    Player(const char *name_);
 
     /**
      * @brief Copy constructor.
@@ -141,7 +138,13 @@ public:
     /**
      * @brief Checks if the player is knocked out (has 0 hit points).
      */
-    bool isKnockedOut();
+    bool isKnockedOut() const;
+
+    /**
+     * @brief Checks if the player got to the max level.
+     */
+    bool isMaxLevel() const;
+
 
     /**
      * @brief Adds coins to the player's inventory.
