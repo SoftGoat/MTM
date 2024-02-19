@@ -5,15 +5,7 @@
 #include "Player.h"
 #include "Mtmchkin.h"
 
-/*class Mtmchkin
-{
-public:
-    void playNextCard();
-    bool isOver() const;
-    GameStatus getGameStatus() const;
-    ~Mtmchkin();
 
-};*/
 
 Mtmchkin::Mtmchkin(const char *playerName, const Card *cardsArray, int numOfCards) {
     m_player = *new Player(playerName);
