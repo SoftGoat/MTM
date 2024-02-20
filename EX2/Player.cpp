@@ -108,24 +108,32 @@ Player::~Player()
 
 Player& Player::operator=(const Player& other) {
     if(this!=&other){
-        char* temp = new char[strlen(other.name) + 1];
-        if(temp == NULL){
-            std::cout<<"operator '=' faild"<<std::endl;
-            return *this;
-        }
-        delete[] name; 
+        delete[] name;
         level = other.level;
         force = other.force;
         hp = other.hp;
         maxHp = other.maxHp;
         coins = other.coins;
-        name = temp;
+        name = new char[strlen(other.name) + 1];
         strcpy(name, other.name);
 
     }
     return *this;
 }
 
+
+/*void Player::printPlayerInfo(const char* name, int level, int force, int hp, int coins){
+
+    std::cout << "Player Details:\n" << std::endl;
+    std::cout << "Name: " << name << "\n"<< std::endl;
+    std::cout << "Level: " << level << "\n"<< std::endl;
+    std::cout << "Force: " << force << "\n"<< std::endl;
+    std::cout << "HP: " << hp << "\n"<< std::endl;
+    std::cout << "Coins: " << coins << "\n"<< std::endl;
+    std::cout << "------------------------\n" << std::endl;
+
+
+}*/
 
 void Player::printInfo() {
     printPlayerInfo(this->name, this->level, this->force, this->hp, this->coins);

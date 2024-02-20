@@ -33,10 +33,12 @@ void Card::applyEncounter(Player& player) const{
 
     if (m_effect == CardType::Battle) {
         if(player.getAttackStrength()>=m_stats.force){ //Player won
+            printBattleResult(true);
             player.addCoins(m_stats.loot);
             player.levelUp();
         }
         else{ //Player lost
+            printBattleResult(false);
             player.damage(m_stats.hpLossOnDefeat);
         }
 
