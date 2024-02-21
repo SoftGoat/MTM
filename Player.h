@@ -45,13 +45,7 @@ private:
      * @param coins The number of coins the player has.
      */
 
-public:
-    /**
-     * @brief Default constructor. Initializes player with default values.
-     */
-    Player();
-
-    /**
+        /**
      * @brief Constructor with parameters.
      * @param name_ The name of the player.
      * @param level The level of the player.
@@ -62,13 +56,20 @@ public:
      */
     Player(const char *name_, int level, int force, int hp, int maxHp, int coins);
 
+public:
+    /**
+     * @brief Default constructor. Initializes player with default values.
+     */
+    Player();
+
+
     /**
      * @brief Constructor with parameters.
      * @param name_ The name of the player.
      * @param force The force of the player.
      * @param maxHp The maximum hit points of the player.
      */
-    Player(const char *name_, int force, int maxHp);
+    Player(const char *name_,int maxHp, int force);
 
     /**
      * @brief Constructor with parameters.
