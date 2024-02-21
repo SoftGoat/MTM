@@ -6,12 +6,12 @@
 
 class Player {
 private:
-    char *m_name; /**< The name of the player */
-    int m_level; /**< The level of the player */
-    int m_force; /**< The force of the player */
-    int m_hp; /**< The current hit points of the player */
-    int m_maxHp; /**< The maximum hit points of the player */
-    int m_coins; /**< The number of coins the player has */
+    char* name; /**< The name of the player */
+    int level; /**< The level of the player */
+    int force; /**< The force of the player */
+    int hp; /**< The current hit points of the player */
+    int maxHp; /**< The maximum hit points of the player */
+    int coins; /**< The number of coins the player has */
 
     constexpr static const char *DEFAULT_NAME = "ZoGi"; /**< The default name for a player */
     static const int DEFAULT_LEVEL = 1; /**< The default level for a player */
@@ -34,7 +34,7 @@ private:
      * @param coins The number of coins the player has.
      * @return True if the input values are valid, false otherwise.
      */
-    static bool inputValidation(char *name, int &level, int &force, int &hp, int &maxHp, int &coins);
+    bool inputValidation(char *name, int &level, int &force, int &hp, int &maxHp, int &coins);
 
     /**
      * @brief Prints the player's information.
@@ -115,7 +115,7 @@ public:
      * @brief Gets the level of the player.
      * @return The level of the player.
      */
-    int getLevel() const;
+    int getLevel();
 
     /**
      * @brief Increases the player's force.
@@ -163,7 +163,7 @@ public:
      * @brief Calculates the player's attack strength.
      * @return The player's attack strength.
      */
-    int getAttackStrength() const;
+    int getAttackStrength();
 };
 
 #endif // PLAYER_H

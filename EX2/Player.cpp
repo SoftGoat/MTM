@@ -88,15 +88,21 @@ Player::Player(){
 
 }
 
-Player::Player(const Player& other){
+Player::Player(const Player& other) {
     this->level = other.level;
     this->force = other.force;
     this->hp = other.hp;
     this->maxHp = other.maxHp;
     this->coins = other.coins;
-    delete[] this->name; // named should be always not null
-    this->name = new char[strlen(other.name) + 1];
-    strcpy(name,other.name);
+    
+    // Initialize name to NULL before assigning
+    this->name = nullptr;
+
+    // If other.name is not null, then perform the copy
+    if (other.name != nullptr) {
+        this->name = new char[strlen(other.name) + 1];
+        strcpy(this->name, other.name);
+    }
 }
 
 
@@ -108,32 +114,26 @@ Player::~Player()
 
 Player& Player::operator=(const Player& other) {
     if(this!=&other){
-        delete[] name;
+        char* temp = new char[strlen(other.name) + 1];
+        if(temp == NULL){
+            std::cout<<"operator '=' faild"<<std::endl;
+            return *this;
+        }
+        if(name != NULL){
+            delete[] name; 
+        }
         level = other.level;
         force = other.force;
         hp = other.hp;
         maxHp = other.maxHp;
         coins = other.coins;
-        name = new char[strlen(other.name) + 1];
+        name = temp;
         strcpy(name, other.name);
 
     }
     return *this;
 }
 
-
-/*void Player::printPlayerInfo(const char* name, int level, int force, int hp, int coins){
-
-    std::cout << "Player Details:\n" << std::endl;
-    std::cout << "Name: " << name << "\n"<< std::endl;
-    std::cout << "Level: " << level << "\n"<< std::endl;
-    std::cout << "Force: " << force << "\n"<< std::endl;
-    std::cout << "HP: " << hp << "\n"<< std::endl;
-    std::cout << "Coins: " << coins << "\n"<< std::endl;
-    std::cout << "------------------------\n" << std::endl;
-
-
-}*/
 
 void Player::printInfo() {
     printPlayerInfo(this->name, this->level, this->force, this->hp, this->coins);
@@ -153,17 +153,24 @@ int Player::getLevel() {
 }
 
 void Player::buff(int attack) {
+    if(attack>0){
     this->force += attack;
+    }
+    
 }
 
 void Player::heal(int potion) {
-    int temp = this->hp + potion;
-    this->hp = temp > this->maxHp ? this->maxHp : temp;
+    if(potion > 0){
+        int temp = this->hp + potion;
+        this->hp = temp > this->maxHp ? this->maxHp : temp;
+    }
 }
 
 void Player::damage(int attack){
-    int temp = this->hp-attack;
-    this->hp = temp < MINIMUM_HP ? MINIMUM_HP : temp;
+    if(attack > 0){
+        int temp = this->hp-attack;
+        this->hp = temp < MINIMUM_HP ? MINIMUM_HP : temp;
+    }
 }
 
 bool Player::isKnockedOut() const {
@@ -181,10 +188,15 @@ bool Player::isMaxLevel() const {
 }
 
 void Player::addCoins(int money){
-    this->coins+=money;
+    if(money >0){
+        this->coins+=money;
+    }
 }
 
 bool Player::pay(int transaction){
+    if(transaction < 0){
+        return false;
+    }
     int temp = this->coins-transaction;
     if (temp < MINIMUM_COINS)
     {
@@ -241,7 +253,7 @@ bool Player::inputValidation(char *name, int &level, int &force, int &hp, int &m
     while (*temp != '\0' && nameIsValid) {
         if (*temp < 'A' || (*temp > 'Z' && *temp < 'a') || *temp > 'z') {
             unchanged = false;
-            std::cout << "The value of 'name' is invalid, value changed to default setting:  " << DEFAULT_NAME << std::endl;
+          //  std::cout << "The value of 'name' is invalid, value changed to default setting:  " << DEFAULT_NAME << std::endl;
             nameIsValid =false;
         }
         temp++;

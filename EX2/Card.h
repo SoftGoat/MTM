@@ -101,7 +101,6 @@ public:
 private:
     CardType m_effect;
     CardStats m_stats;
-
 };
 
 

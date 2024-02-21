@@ -30,8 +30,10 @@ Mtmchkin::Mtmchkin(const Mtmchkin &mtmchkin) {
 }
 
 Mtmchkin::~Mtmchkin() {
-    m_player.~Player();
-    delete[] m_cardsArray;
+    if (m_cardsArray != nullptr) {
+     delete[] m_cardsArray;
+    }
+
 }
 
 void Mtmchkin::playNextCard() {
