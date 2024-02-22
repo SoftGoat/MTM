@@ -8,7 +8,7 @@
 
 
 Mtmchkin::Mtmchkin(const char *playerName, const Card *cardsArray, int numOfCards) {
-    m_player = *new Player(playerName);
+    m_player = Player(playerName);
     m_numberOfCards = numOfCards;
     m_cardsArray = new Card[numOfCards];
     for (int i = 0; i < numOfCards; i++) {
@@ -54,7 +54,6 @@ Mtmchkin::~Mtmchkin() {
     if (m_cardsArray != nullptr) {
      delete[] m_cardsArray;
     }
-
 }
 
 void Mtmchkin::playNextCard() {

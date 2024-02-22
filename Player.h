@@ -6,12 +6,12 @@
 
 class Player {
 private:
-    char* name; /**< The name of the player */
-    int level; /**< The level of the player */
-    int force; /**< The force of the player */
-    int hp; /**< The current hit points of the player */
-    int maxHp; /**< The maximum hit points of the player */
-    int coins; /**< The number of coins the player has */
+    char* m_name; /**< The name of the player */
+    int m_level; /**< The level of the player */
+    int m_force; /**< The force of the player */
+    int m_hp; /**< The current hit points of the player */
+    int m_maxHp; /**< The maximum hit points of the player */
+    int m_coins; /**< The number of coins the player has */
 
     constexpr static const char *DEFAULT_NAME = "ZoGi"; /**< The default name for a player */
     static const int DEFAULT_LEVEL = 1; /**< The default level for a player */

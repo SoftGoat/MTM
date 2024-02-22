@@ -8,12 +8,12 @@ Player::Player(const char *name_, int level, int force, int hp, int maxHp, int c
     char* name = new char[strlen(name_) + 1];
     strcpy(name, name_);
     inputValidation(name, level, force, hp, maxHp, coins);
-    this->name = name;
-    this->level = level;
-    this->force = force;
-    this->hp =hp;
-    this->maxHp = maxHp;
-    this->coins = coins;
+    m_name = name;
+    m_level = level;
+    m_force = force;
+    m_hp =hp;
+    m_maxHp = maxHp;
+    m_coins = coins;
 }
 
 Player::Player(const char *name_, int maxHp, int force) {
@@ -24,14 +24,12 @@ Player::Player(const char *name_, int maxHp, int force) {
     char* name = new char[strlen(name_) + 1];
     strcpy(name, name_);
     inputValidation(name, level, force, hp, maxHp, coins);
-    this->name = name;
-    this->level = level;
-    this->force = force;
-    this->hp = hp;
-    this->maxHp = maxHp;
-    this->coins = coins;
-
-
+    m_name = name;
+    m_level = level;
+    m_force = force;
+    m_hp = hp;
+    m_maxHp = maxHp;
+    m_coins = coins;
 }
 
 Player::Player(const char *name_, int maxHp) {
@@ -43,14 +41,12 @@ Player::Player(const char *name_, int maxHp) {
     char* name = new char[strlen(name_) + 1];
     strcpy(name, name_);
     inputValidation(name, level, force, hp, maxHp, coins);
-    this->name = name;
-    this->level = level;
-    this->force = force;
-    this->hp = hp;
-    this->maxHp = maxHp;
-    this->coins = coins;
-
-
+    m_name = name;
+    m_level = level;
+    m_force = force;
+    m_hp = hp;
+    m_maxHp = maxHp;
+    m_coins = coins;
 }
 
 Player::Player(const char *name_) {
@@ -62,12 +58,12 @@ Player::Player(const char *name_) {
     char* name = new char[strlen(name_) + 1];
     strcpy(name, name_);
     inputValidation(name, level, force, hp, maxHp, coins);
-    this->name = name;
-    this->level = level;
-    this->force = force;
-    this->hp = hp;
-    this->maxHp = maxHp;
-    this->coins = coins;
+    m_name = name;
+    m_level = level;
+    m_force = force;
+    m_hp = hp;
+    m_maxHp = maxHp;
+    m_coins = coins;
 }
 
 Player::Player(){
@@ -79,56 +75,55 @@ Player::Player(){
     char* name = new char[strlen(DEFAULT_NAME) + 1];
     strcpy(name, DEFAULT_NAME);
     inputValidation(name, level, force, hp, maxHp, coins);
-    this->name = name;
-    this->level = level;
-    this->force = force;
-    this->hp = hp;
-    this->maxHp = maxHp;
-    this->coins = coins;
-
+    m_name = name;
+    m_level = level;
+    m_force = force;
+    m_hp = hp;
+    m_maxHp = maxHp;
+    m_coins = coins;
 }
 
 Player::Player(const Player& other) {
-    this->level = other.level;
-    this->force = other.force;
-    this->hp = other.hp;
-    this->maxHp = other.maxHp;
-    this->coins = other.coins;
+    m_level = other.m_level;
+    m_force = other.m_force;
+    m_hp = other.m_hp;
+    m_maxHp = other.m_maxHp;
+    m_coins = other.m_coins;
     
     // Initialize name to NULL before assigning
-    this->name = nullptr;
+    m_name = nullptr;
 
     // If other.name is not null, then perform the copy
-    if (other.name != nullptr) {
-        this->name = new char[strlen(other.name) + 1];
-        strcpy(this->name, other.name);
+    if (other.m_name != nullptr) {
+        m_name = new char[strlen(other.m_name) + 1];
+        strcpy(m_name, other.m_name);
     }
 }
 
 
 Player::~Player()
 {
-    delete[] name;
+    delete[] m_name;
 }
 
 
 Player& Player::operator=(const Player& other) {
     if(this!=&other){
-        char* temp = new char[strlen(other.name) + 1];
+        char* temp = new char[strlen(other.m_name) + 1];
         if(temp == NULL){
             std::cout<<"operator '=' faild"<<std::endl;
             return *this;
         }
-        if(name != NULL){
-            delete[] name; 
+        if(m_name != NULL){
+            delete[] m_name;
         }
-        level = other.level;
-        force = other.force;
-        hp = other.hp;
-        maxHp = other.maxHp;
-        coins = other.coins;
-        name = temp;
-        strcpy(name, other.name);
+        m_level = other.m_level;
+        m_force = other.m_force;
+        m_hp = other.m_hp;
+        m_maxHp = other.m_maxHp;
+        m_coins = other.m_coins;
+        m_name = temp;
+        strcpy(m_name, other.m_name);
 
     }
     return *this;
@@ -136,52 +131,52 @@ Player& Player::operator=(const Player& other) {
 
 
 void Player::printInfo() {
-    printPlayerInfo(this->name, this->level, this->force, this->hp, this->coins);
+    printPlayerInfo(m_name, m_level, m_force, m_hp, m_coins);
 
 }
 
 void Player::levelUp() {
-    if (this->level < MAXIMUM_LEVEL) {
-        this->level++;
+    if (m_level < MAXIMUM_LEVEL) {
+        m_level++;
     } else {
         std::cout << "Player already reached max level: " << std::endl;
     }
 }
 
 int Player::getLevel() {
-    return this->level;
+    return m_level;
 }
 
 void Player::buff(int attack) {
     if(attack>0){
-    this->force += attack;
+    m_force += attack;
     }
     
 }
 
 void Player::heal(int potion) {
     if(potion > 0){
-        int temp = this->hp + potion;
-        this->hp = temp > this->maxHp ? this->maxHp : temp;
+        int temp = m_hp + potion;
+        m_hp = temp > m_maxHp ? m_maxHp : temp;
     }
 }
 
 void Player::damage(int attack){
     if(attack > 0){
-        int temp = this->hp-attack;
-        this->hp = temp < MINIMUM_HP ? MINIMUM_HP : temp;
+        int temp = m_hp-attack;
+        m_hp = temp < MINIMUM_HP ? MINIMUM_HP : temp;
     }
 }
 
 bool Player::isKnockedOut() const {
-    if(this->hp <= MINIMUM_HP){  // shoudnt be sincero that hp < MINIMUM_HP
+    if(m_hp <= MINIMUM_HP){  // shoudnt be sincero that hp < MINIMUM_HP
         return true;
     }
     return false;
 }
 
 bool Player::isMaxLevel() const {
-    if (level >= MAXIMUM_LEVEL) {  // shoudnt be sincero that level > MAXIMUM_LEVEL
+    if (m_level >= MAXIMUM_LEVEL) {  // shoudnt be sincero that level > MAXIMUM_LEVEL
         return true;
     }
     return false;
@@ -189,7 +184,7 @@ bool Player::isMaxLevel() const {
 
 void Player::addCoins(int money){
     if(money >0){
-        this->coins+=money;
+        m_coins+=money;
     }
 }
 
@@ -197,18 +192,18 @@ bool Player::pay(int transaction){
     if(transaction < 0){
         return false;
     }
-    int temp = this->coins-transaction;
+    int temp = m_coins-transaction;
     if (temp < MINIMUM_COINS)
     {
         return false;
     }
-    this->coins = temp;
+    m_coins = temp;
     return true;
 }
 
 
 int Player::getAttackStrength(){
-    return this->force+this->level;
+    return m_force+m_level;
 }
 
 bool Player::inputValidation(char *name, int &level, int &force, int &hp, int &maxHp, int &coins)
