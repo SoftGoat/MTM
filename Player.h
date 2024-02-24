@@ -82,7 +82,7 @@ public:
      * @brief Constructor with parameters.
      * @param name_ The name of the player.
      */
-    Player(const char *name_);
+    explicit Player(const char *name_);
 
     /**
      * @brief Copy constructor.
@@ -140,11 +140,6 @@ public:
      * @brief Checks if the player is knocked out (has 0 hit points).
      */
     bool isKnockedOut() const;
-
-    /**
-     * @brief Checks if the player got to the max level.
-     */
-    bool isMaxLevel() const;
 
 
     /**

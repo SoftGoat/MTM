@@ -175,13 +175,6 @@ bool Player::isKnockedOut() const {
     return false;
 }
 
-bool Player::isMaxLevel() const {
-    if (m_level >= MAXIMUM_LEVEL) {  // shoudnt be sincero that level > MAXIMUM_LEVEL
-        return true;
-    }
-    return false;
-}
-
 void Player::addCoins(int money){
     if(money >0){
         m_coins+=money;

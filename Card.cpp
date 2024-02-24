@@ -12,10 +12,6 @@ const int MINIMUM_HPLOSSONDEFEAT =0;
 
 Card::Card(CardType type, const CardStats &stats) {
     m_effect = type;
-
-
-
-
     if (type == CardType::Battle) {
         m_stats.loot = stats.loot; //< MINIMUM_LOOT ? MINIMUM_LOOT: stats.loot;
         m_stats.force = stats.force; //< MINIMUM_FORCE ? MINIMUM_FORCE: stats.force;
@@ -29,7 +25,7 @@ Card::Card(CardType type, const CardStats &stats) {
         m_stats.cost = stats.cost;// < MINIMUM_COST ? MINIMUM_COST: stats.cost;
         m_stats.heal = stats.heal;
     }
-     else if (type == CardType::Treasure) {
+    else if (type == CardType::Treasure) {
         m_stats.loot = stats.loot;// < MINIMUM_LOOT ? MINIMUM_LOOT: stats.loot;
     } 
     else {
