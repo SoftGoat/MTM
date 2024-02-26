@@ -110,13 +110,6 @@ Player::~Player()
 Player& Player::operator=(const Player& other) {
     if(this!=&other){
         char* temp = new char[strlen(other.m_name) + 1];
-        if(temp == NULL){
-            std::cout<<"operator '=' faild"<<std::endl;
-            return *this;
-        }
-        if(m_name != NULL){
-            delete[] m_name;
-        }
         m_level = other.m_level;
         m_force = other.m_force;
         m_hp = other.m_hp;
@@ -143,7 +136,7 @@ void Player::levelUp() {
     }
 }
 
-int Player::getLevel() {
+int Player::getLevel() const {
     return m_level;
 }
 
@@ -195,43 +188,33 @@ bool Player::pay(int transaction){
 }
 
 
-int Player::getAttackStrength(){
+int Player::getAttackStrength() const{
     return m_force+m_level;
 }
 
-bool Player::inputValidation(char *name, int &level, int &force, int &hp, int &maxHp, int &coins)
-{
+bool Player::inputValidation(char *name, int &level, int &force, int &hp, int &maxHp, int &coins){
     bool unchanged = true;
-    if (level < MINIMUM_LEVEL || level > MAXIMUM_LEVEL)
-    {
+    if (level < MINIMUM_LEVEL || level > MAXIMUM_LEVEL){
         level = DEFAULT_LEVEL;
         unchanged = false;
         std::cout << "The value of 'level' is invalid value changed to default setting:  " << DEFAULT_LEVEL << std::endl;
     }
-
-    if (force < MINIMUM_FORCE)
-    {
+    if (force < MINIMUM_FORCE){
         force = DEFAULT_FORCE;
         unchanged = false;
         std::cout << "The value of 'force' is invalid, value changed to default setting:  " << DEFAULT_FORCE << std::endl;
-
     }
-
-    if (maxHp < MINIMUM_HP)
-    {
+    if (maxHp < MINIMUM_HP){
         maxHp = DEFAULT_MAXHP;
         unchanged = false;
         std::cout << "The value of 'maxHp' is invalid, value changed to default setting:  " << DEFAULT_MAXHP << std::endl;
     }
-
-    if (hp < MINIMUM_HP || hp > maxHp)
-    {
+    if (hp < MINIMUM_HP || hp > maxHp){
         hp = maxHp;
         unchanged = false;
         std::cout << "The value of 'hp' is invalid, value changed to maxHp value :  " << maxHp << std::endl;
     }
-    if (coins < MINIMUM_COINS)
-    {
+    if (coins < MINIMUM_COINS){
         coins = DEFAULT_COINS;
         unchanged = false;
         std::cout << "The value of 'coins' is invalid, value changed to default setting:  " << DEFAULT_COINS << std::endl;
@@ -241,7 +224,7 @@ bool Player::inputValidation(char *name, int &level, int &force, int &hp, int &m
     while (*temp != '\0' && nameIsValid) {
         if (*temp < 'A' || (*temp > 'Z' && *temp < 'a') || *temp > 'z') {
             unchanged = false;
-          //  std::cout << "The value of 'name' is invalid, value changed to default setting:  " << DEFAULT_NAME << std::endl;
+            std::cout << "The value of 'name' is invalid, value changed to default setting:  " << DEFAULT_NAME << std::endl;
             nameIsValid =false;
         }
         temp++;

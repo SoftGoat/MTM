@@ -1,14 +1,8 @@
 #include <iostream>
-#include <cstring>
 #include "Card.h"
 #include "utilities.h"
 #include "Player.h"
-const int MINIMUM_LOOT =0;
-const int MINIMUM_BUFF =0;
-const int MINIMUM_COST =0;
-const int MINIMUM_FORCE =0;
-const int MINIMUM_HEAL =0;
-const int MINIMUM_HPLOSSONDEFEAT =0;
+
 
 Card::Card(CardType type, const CardStats &stats) {
     m_effect = type;

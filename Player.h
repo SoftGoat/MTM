@@ -34,7 +34,7 @@ private:
      * @param coins The number of coins the player has.
      * @return True if the input values are valid, false otherwise.
      */
-    bool inputValidation(char *name, int &level, int &force, int &hp, int &maxHp, int &coins);
+    static bool inputValidation(char *name, int &level, int &force, int &hp, int &maxHp, int &coins);
 
     /**
      * @brief Prints the player's information.
@@ -116,7 +116,7 @@ public:
      * @brief Gets the level of the player.
      * @return The level of the player.
      */
-    int getLevel();
+    int getLevel() const;
 
     /**
      * @brief Increases the player's force.
@@ -159,7 +159,7 @@ public:
      * @brief Calculates the player's attack strength.
      * @return The player's attack strength.
      */
-    int getAttackStrength();
+    int getAttackStrength() const;
 };
 
 #endif // PLAYER_H
