@@ -76,4 +76,5 @@ void Card::printInfo() const {
     else{
     std::cout << "Card type is undefined:\n" << std::endl;
     }
+
 }
