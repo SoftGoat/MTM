@@ -63,7 +63,7 @@ void Queue<T>::pushBack(T element){
 }
 
 template <class T>
-T Queue<T>::front(){
+T& Queue<T>::front(){
     if(m_head == nullptr){
         throw EmptyQueue(); //queue is empty
     }
@@ -151,17 +151,32 @@ bool Queue<T>::Iterator::operator!=(const typename Queue<T>::Iterator& other) co
 
 
 template <class T>
-typename Queue<T>::Iterator Queue<T>::begin() const {
+typename Queue<T>::Iterator Queue<T>::begin() {
     return Iterator(m_head);
 }
 
 template <class T>
-typename Queue<T>::Iterator Queue<T>::end() const {
-    if(m_head == nullptr){
+typename Queue<T>::Iterator Queue<T>::end() {
+    if (m_tail == nullptr) {
         return Iterator(nullptr);
     }
     return Iterator(m_tail->next);
 }
+
+template <class T>
+typename Queue<T>::ConstIterator Queue<T>::begin() const {
+    return ConstIterator(m_head);
+}
+
+template <class T>
+typename Queue<T>::ConstIterator Queue<T>::end() const {
+    if (m_tail == nullptr) {
+        return ConstIterator(nullptr);
+    }
+    return ConstIterator(m_tail->next);
+}
+
+
 
 template <class T>
 typename Queue<T>::Iterator& Queue<T>::Iterator::operator++(){

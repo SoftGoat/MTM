@@ -48,9 +48,9 @@ public:
      * Retrieves and returns the value of the first element in the Queue without removing it.
      * Throws a std::out_of_range exception if the Queue is empty.
      *
-     * @return The value of the first element in the Queue.
+     * @return reference to the first element in the Queue. 
      */
-    T front();
+    T& front();
 
     /*
      * popFront:
@@ -69,20 +69,35 @@ public:
 
     // Iterator class forward declaration
     class Iterator;
+    class ConstIterator;
+
+    /*
+    * Function to obtain an iterator pointing to the beginning of the Queue.
+    *
+    * @return ConstIterator pointing to the beginning of the Queue.
+    */
+    ConstIterator  begin() const;
+
+    /*
+    * Function to obtain an iterator pointing to the end of the Queue (nullptr).
+    *
+    * @return ConstIterator pointing to the end of the Queue (nullptr).
+    */
+    ConstIterator  end() const;
 
     /*
     * Function to obtain an iterator pointing to the beginning of the Queue.
     *
     * @return Iterator pointing to the beginning of the Queue.
     */
-    Iterator begin() const;
+    Iterator  begin() const;
 
     /*
     * Function to obtain an iterator pointing to the end of the Queue (nullptr).
     *
     * @return Iterator pointing to the end of the Queue (nullptr).
     */
-    Iterator end() const;
+    Iterator  end() const;
 
     class EmptyQueue {};
     class InvalidOperation{};
@@ -97,7 +112,6 @@ private:
     int m_length;
 
 public:
-    // Other member function declarations...
 
     /*
      * filter:
@@ -181,6 +195,21 @@ public:
      * @return True if the iterators are not pointing to the same node, false otherwise.
      */
     bool operator!=(const Iterator& other) const;
+
+    /*
+    * Function to obtain an iterator pointing to the beginning of the Queue.
+    *
+    * @return Iterator pointing to the beginning of the Queue.
+    */
+    Iterator  begin() const;
+
+    /*
+    * Function to obtain an iterator pointing to the end of the Queue (nullptr).
+    *
+    * @return Iterator pointing to the end of the Queue (nullptr).
+    */
+    Iterator  end() const;
+
     class InvalidOperation{};
 };
 
@@ -212,5 +241,79 @@ typename Queue<T>::Iterator& Queue<T>::Iterator::operator++() {
  */
 template <class T>
 bool Queue<T>::Iterator::operator!=(const Iterator& other) const {
+    return m_current != other.m_current; // Compare if the iterators are not pointing to the same node
+}
+
+
+
+template <class T>
+class Queue<T>::ConstIterator {
+private:
+    typename Queue<T>::Node* m_current; // Pointer to the current node
+
+public:
+    /*
+     * Constructor:
+     * Initializes the iterator with a pointer to the given node.
+     *
+     * @param ptr - Pointer to a Node in the Queue.
+     */
+    ConstIterator(typename Queue<T>::Node* ptr);
+
+    /*
+     * Overloaded dereference operator:
+     * Returns a reference to the data stored in the current node.
+     *
+     * @return Reference to the data of the current node.
+     */
+    T& operator*() const;
+
+    /*
+     * Overloaded pre-increment operator:
+     * Moves the iterator to the next node in the Queue.
+     *
+     * @return Reference to the updated iterator.
+     */
+    ConstIterator& operator++();
+
+    /*
+     * Overloaded inequality operator:
+     * Compares two iterators for inequality.
+     *
+     * @param other - Another Iterator object to compare with.
+     * @return True if the iterators are not pointing to the same node, false otherwise.
+     */
+    bool operator!=(const ConstIterator& other) const;
+    class InvalidOperation{};
+};
+
+/*
+ * Constructor implementation.
+ */
+template <class T>
+Queue<T>::ConstIterator::ConstIterator(typename Queue<T>::Node* ptr) : m_current(ptr) {}
+
+/*
+ * Overloaded dereference operator implementation.
+ */
+template <class T>
+T& Queue<T>::ConstIterator::operator*() const {
+    return m_current->data; // Return reference to the data of the current node
+}
+
+/*
+ * Overloaded pre-increment operator implementation.
+ */
+template <class T>
+typename Queue<T>::ConstIterator& Queue<T>::ConstIterator::operator++() {
+    m_current = m_current->next; // Move the iterator to the next node
+    return *this; // Return reference to the updated iterator
+}
+
+/*
+ * Overloaded inequality operator implementation.
+ */
+template <class T>
+bool Queue<T>::ConstIterator::operator!=(const ConstIterator& other) const {
     return m_current != other.m_current; // Compare if the iterators are not pointing to the same node
 }
