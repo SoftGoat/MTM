@@ -84,21 +84,7 @@ public:
     * @return ConstIterator pointing to the end of the Queue (nullptr).
     */
     ConstIterator  end() const;
-
-    /*
-    * Function to obtain an iterator pointing to the beginning of the Queue.
-    *
-    * @return Iterator pointing to the beginning of the Queue.
-    */
-    Iterator  begin() const;
-
-    /*
-    * Function to obtain an iterator pointing to the end of the Queue (nullptr).
-    *
-    * @return Iterator pointing to the end of the Queue (nullptr).
-    */
-    Iterator  end() const;
-
+    
     class EmptyQueue {};
     class InvalidOperation{};
 
@@ -123,8 +109,8 @@ public:
      * @param predicate - Predicate function to apply to each element in the Queue.
      * @return New Queue containing only the elements for which the predicate function returns true.
      */
-    template <class T>
-    friend Queue<T> filter(const Queue<T>& q, bool (*predicate)(T));
+    template <class U>
+    friend Queue<T> filter(const Queue<T>& q, bool (*predicate)(U));
 
     /*
      * transform:
@@ -136,8 +122,8 @@ public:
      * @param transformer - Function to apply to each element in the Queue.
      * @return Reference to this Queue after transformation.
      */
-    template <class T>
-    friend Queue<T> transform(const Queue<T>& q, T (*transformer)(T));
+    template <class U>
+    friend Queue<T> transform(const Queue<T>& q, T (*transformer)(U));
 
     /*
      * reduce:
@@ -152,8 +138,8 @@ public:
      * @param reducer - Reducer function to apply to each element in the Queue.
      * @return Result of the reduction.
      */ 
-    template <class T>
-    friend T reduce(const Queue<T>& q, T initial, T (*reducer)(T, T));
+    template <class U>
+    friend T reduce(const Queue<T>& q, U initial, U (*reducer)(U, U));
 };
 
 // Iterator class declaration
@@ -161,8 +147,21 @@ template <class T>
 class Queue<T>::Iterator {
 private:
     typename Queue<T>::Node* m_current; // Pointer to the current node
+    friend class constIterator;
 
-public:
+
+public: 
+
+
+    /*
+     * Constructor:
+     * Initializes the iterator with a pointer to the given node.
+     *
+     * @param ptr - Pointer to a Node in the Queue.
+     */
+
+    Iterator(const typename Queue<T>::ConstIterator& other);
+
     /*
      * Constructor:
      * Initializes the iterator with a pointer to the given node.
@@ -213,36 +212,7 @@ public:
     class InvalidOperation{};
 };
 
-/*
- * Constructor implementation.
- */
-template <class T>
-Queue<T>::Iterator::Iterator(typename Queue<T>::Node* ptr) : m_current(ptr) {}
 
-/*
- * Overloaded dereference operator implementation.
- */
-template <class T>
-T& Queue<T>::Iterator::operator*() const {
-    return m_current->data; // Return reference to the data of the current node
-}
-
-/*
- * Overloaded pre-increment operator implementation.
- */
-template <class T>
-typename Queue<T>::Iterator& Queue<T>::Iterator::operator++() {
-    m_current = m_current->next; // Move the iterator to the next node
-    return *this; // Return reference to the updated iterator
-}
-
-/*
- * Overloaded inequality operator implementation.
- */
-template <class T>
-bool Queue<T>::Iterator::operator!=(const Iterator& other) const {
-    return m_current != other.m_current; // Compare if the iterators are not pointing to the same node
-}
 
 
 

@@ -1,5 +1,16 @@
 #include "Queue.h"
-#include <iostream>;
+#include <iostream>
+#include <exception>
+
+
+
+class EmptyQueue : public std::exception {
+public:
+    const char* what() const noexcept override {
+        return "Queue is empty";
+    }
+};
+
 
 template <class T>
 Queue<T>::Queue(){
@@ -23,7 +34,7 @@ template <class T>
 Queue<T>::Queue(const Queue& queue) {
     Node* temp0 = new Node(queue.m_head->data);
     if(temp0 == nullptr){
-        throw std::bad_alloc;
+        throw std::bad_alloc();
     }
     while(m_head!=nullptr){
         Node* temp = m_head->next;
@@ -36,7 +47,7 @@ Queue<T>::Queue(const Queue& queue) {
     while (temp->next!=nullptr){
         m_tail->next = new Node(temp->data);
         if(m_tail == nullptr){
-             throw std::bad_alloc;
+             throw std::bad_alloc();
         }
         m_tail = m_tail->next;
         temp=temp->next;
@@ -49,7 +60,7 @@ template <class T>
 void Queue<T>::pushBack(T element){
     Node* newNode = new Node(element);
     if(newNode == nullptr){
-        throw std::bad_alloc;
+        throw std::bad_alloc();
     }
     if(m_head == nullptr){
         m_head = newNode;
@@ -135,6 +146,11 @@ Queue<T>::Iterator::Iterator(typename Queue<T>::Node* ptr){
     m_current = ptr;
 }
 
+template <class T>
+Queue<T>::Iterator::Iterator(const typename Queue<T>::ConstIterator& other) {
+    m_current = const_cast<typename Queue<T>::Node*>(other.m_current);
+}
+
 
 template <class T>
 T& Queue<T>::Iterator::operator*() const {
@@ -149,19 +165,6 @@ bool Queue<T>::Iterator::operator!=(const typename Queue<T>::Iterator& other) co
     return m_current != other.m_current;
 }
 
-
-template <class T>
-typename Queue<T>::Iterator Queue<T>::begin() {
-    return Iterator(m_head);
-}
-
-template <class T>
-typename Queue<T>::Iterator Queue<T>::end() {
-    if (m_tail == nullptr) {
-        return Iterator(nullptr);
-    }
-    return Iterator(m_tail->next);
-}
 
 template <class T>
 typename Queue<T>::ConstIterator Queue<T>::begin() const {
@@ -187,3 +190,4 @@ typename Queue<T>::Iterator& Queue<T>::Iterator::operator++(){
     return *this;
 }
     
+
