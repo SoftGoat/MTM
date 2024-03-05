@@ -9,13 +9,23 @@ public:
      * Constructor:
      * Initializes an empty Queue.
      */
-    Queue();
+    Queue() {
+        m_head = nullptr;
+        m_tail = nullptr;
+        m_length = 0;
+    }
 
     /*
      * Destructor:
      * Cleans up resources used by the Queue.
      */
-    ~Queue();
+    ~Queue() {
+        while (m_head != nullptr) {
+            Node* temp = m_head->next;
+            delete m_head;
+            m_head = temp;
+        }
+    }
 
     /*
      * Copy Constructor:
@@ -23,7 +33,29 @@ public:
      *
      * @param queue - Another Queue object to copy.
      */
-    Queue(const Queue& queue);
+    Queue(const Queue& queue) {
+        Node* temp0 = new Node(queue.m_head->data);
+        if (temp0 == nullptr) {
+            throw std::bad_alloc();
+        }
+        while (m_head != nullptr) {
+            Node* temp = m_head->next;
+            delete m_head;
+            m_head = temp;
+        }
+        Node* temp = queue.m_head;
+        m_head = temp0;
+        m_tail = m_head;
+        while (temp->next != nullptr) {
+            m_tail->next = new Node(temp->data);
+            if (m_tail == nullptr) {
+                throw std::bad_alloc();
+            }
+            m_tail = m_tail->next;
+            temp = temp->next;
+        }
+        m_length = queue.m_length;
+    }
 
     /*
      * Assignment Operator:
@@ -32,7 +64,30 @@ public:
      * @param queue - Another Queue object to assign.
      * @return Reference to this Queue after assignment.
      */
-    Queue& operator=(const Queue& queue);
+    Queue& operator=(const Queue& queue) {
+        Node* temp0 = new Node(queue.m_head->data);
+        if (temp0 == nullptr) {
+            throw std::bad_alloc();
+        }
+        while (m_head != nullptr) {
+            Node* temp = m_head->next;
+            delete m_head;
+            m_head = temp;
+        }
+        Node* temp = queue.m_head;
+        m_head = temp0;
+        m_tail = m_head;
+        while (temp->next != nullptr) {
+            m_tail->next = new Node(temp->data);
+            if (m_tail == nullptr) {
+                throw std::bad_alloc();
+            }
+            m_tail = m_tail->next;
+            temp = temp->next;
+        }
+        m_length = queue.m_length;
+        return *this;
+    }
 
     /*
      * Assignment Operator:
@@ -41,7 +96,21 @@ public:
      * @param element - New value to assign to the first element in the Queue.
      * @return Reference to this Queue after assignment.
      */
-    void pushBack(T element);
+    void pushBack(T element) {
+        Node* newNode = new Node(element);
+        if (newNode == nullptr) {
+            throw std::bad_alloc();
+        }
+        if (m_head == nullptr) {
+            m_head = newNode;
+            m_tail = newNode;
+        }
+        else {
+            m_tail->next = newNode;
+            m_tail = m_tail->next;
+        }
+        m_length++;
+    }
 
     /*
      * front:
@@ -50,14 +119,28 @@ public:
      *
      * @return reference to the first element in the Queue. 
      */
-    T& front();
+    T& front() {
+        if (m_head == nullptr) {
+            throw EmptyQueue(); //queue is empty
+        }
+        return m_head->data;
+    }
+
 
     /*
      * popFront:
      * Removes the first element from the Queue.
      * Throws a std::out_of_range exception if the Queue is empty.
      */
-    void popFront();
+    void popFront() {
+        if (m_head == nullptr) {
+            throw EmptyQueue(); //queue is empty
+        }
+        Node* temp = m_head;
+        m_head = m_head->next;
+        delete temp;
+        m_length--;
+    }
 
     /*
      * size:
@@ -65,26 +148,38 @@ public:
      *
      * @return Number of elements in the Queue.
      */
-    int size();
+    int size() {
+        if (m_head == nullptr) {
+            return 0;
+        }
+        return m_length;
+    }
+
 
     // Iterator class forward declaration
     class Iterator;
     class ConstIterator;
 
     /*
-    * Function to obtain an iterator pointing to the beginning of the Queue.
-    *
-    * @return ConstIterator pointing to the beginning of the Queue.
-    */
-    ConstIterator  begin() const;
+     * Function to obtain an iterator pointing to the beginning of the Queue.
+     *
+     * @return ConstIterator pointing to the beginning of the Queue.
+     */
+    ConstIterator begin() const {
+        return ConstIterator(m_head);
+    }
 
     /*
-    * Function to obtain an iterator pointing to the end of the Queue (nullptr).
-    *
-    * @return ConstIterator pointing to the end of the Queue (nullptr).
-    */
-    ConstIterator  end() const;
-    
+     * Function to obtain an iterator pointing to the end of the Queue (nullptr).
+     *
+     * @return ConstIterator pointing to the end of the Queue (nullptr).
+     */
+    ConstIterator end() const {
+        if (m_tail == nullptr) {
+            return ConstIterator(nullptr);
+        }
+        return ConstIterator(m_tail->next);
+    };
     class EmptyQueue {};
     class InvalidOperation{};
 
@@ -92,7 +187,13 @@ private:
     struct Node {
         T data;
         Node* next;
-    };  
+
+        Node(T data) {
+            this->data = data;
+            this->next = nullptr;
+        }
+    };
+
     Node* m_head;
     Node* m_tail;
     int m_length;
@@ -110,7 +211,18 @@ public:
      * @return New Queue containing only the elements for which the predicate function returns true.
      */
     template <class U>
-    friend Queue<T> filter(const Queue<T>& q, bool (*predicate)(U));
+    friend Queue<T> filter(const Queue<T>& q, bool (*predicate)(U)) {
+        Queue<T> filteredQueue;
+        typename Queue<T>::Node* temp = q.m_head;
+        while (temp != nullptr) {
+            if (predicate(temp->data)) {
+                filteredQueue.pushBack(temp->data);
+            }
+            temp = temp->next;
+        }
+        return filteredQueue;
+    }
+
 
     /*
      * transform:
@@ -123,7 +235,15 @@ public:
      * @return Reference to this Queue after transformation.
      */
     template <class U>
-    friend Queue<T> transform(const Queue<T>& q, T (*transformer)(U));
+    friend Queue<T> transform(const Queue<T>& q, T (*transformer)(U)) {
+        Queue<T> transformedQueue = q; // Make a copy of the input queue
+        typename Queue<T>::Node* temp = transformedQueue.m_head;
+        while (temp != nullptr) {
+            temp->data = transformer(temp->data);
+            temp = temp->next;
+        }
+        return transformedQueue;
+    }
 
     /*
      * reduce:
@@ -139,151 +259,123 @@ public:
      * @return Result of the reduction.
      */ 
     template <class U>
-    friend T reduce(const Queue<T>& q, U initial, U (*reducer)(U, U));
+    friend T reduce(const Queue<T>& q, U initial,U (*reducer)(U, U)) {
+        if (q.m_head == nullptr) {
+            throw EmptyQueue(); // Queue is empty
+        }
+        T accumulate = initial;
+        typename Queue<T>::Node* temp = q.m_head;
+        while (temp != nullptr) {
+            accumulate = reducer(temp->data, accumulate);
+            temp = temp->next;
+        }
+        return accumulate;
+    }
+
+    // Iterator class declaration
+    class Iterator {
+    private:
+        typename Queue<T>::Node* m_current; // Pointer to the current node
+        friend class ConstIterator;
+
+    public: 
+        /*
+         * Constructor:
+         * Initializes the iterator with a pointer to the given node.
+         *
+         * @param ptr - Pointer to a Node in the Queue.
+         */
+        Iterator(typename Queue<T>::Node* ptr) : m_current(ptr) {}
+
+        Iterator(const typename Queue<T>::ConstIterator& other) {
+            m_current = const_cast<typename Queue<T>::Node*>(other.m_current);
+        }
+
+        /*
+         * Overloaded dereference operator:
+         * Returns a reference to the data stored in the current node.
+         *
+         * @return Reference to the data of the current node.
+         */
+        T& operator*() const {
+            return m_current->data;
+        }
+
+        /*
+         * Overloaded pre-increment operator:
+         * Moves the iterator to the next node in the Queue.
+         *
+         * @return Reference to the updated iterator.
+         */
+        Iterator& operator++() {
+            m_current = m_current->next;
+            return *this;
+        }
+
+        /*
+         * Overloaded inequality operator:
+         * Compares two iterators for inequality.
+         *
+         * @param other - Another Iterator object to compare with.
+         * @return True if the iterators are not pointing to the same node, false otherwise.
+         */
+        bool operator!=(const Iterator& other) const {
+            return m_current != other.m_current;
+        }
+
+        class InvalidOperation{};
+    };
+
+    class ConstIterator {
+    private:
+        typename Queue<T>::Node* m_current; // Pointer to the current node
+        friend class Iterator;
+
+    public:
+        /*
+         * Constructor:
+         * Initializes the iterator with a pointer to the given node.
+         *
+         * @param ptr - Pointer to a Node in the Queue.
+         */
+        ConstIterator(typename Queue<T>::Node* ptr) : m_current(ptr) {}
+
+        /*
+         * Overloaded dereference operator:
+         * Returns a reference to the data stored in the current node.
+         *
+         * @return Reference to the data of the current node.
+         */
+        T& operator*() const {
+            return m_current->data;
+        }
+
+        /*
+         * Overloaded pre-increment operator:
+         * Moves the iterator to the next node in the Queue.
+         *
+         * @return Reference to the updated iterator.
+         */
+        ConstIterator& operator++() {
+            m_current = m_current->next;
+            return *this;
+        }
+
+        /*
+         * Overloaded inequality operator:
+         * Compares two iterators for inequality.
+         *
+         * @param other - Another Iterator object to compare with.
+         * @return True if the iterators are not pointing to the same node, false otherwise.
+         */
+        bool operator!=(const ConstIterator& other) const {
+            return m_current != other.m_current;
+        }
+
+        class InvalidOperation{};
+    };
+
+
+
+
 };
-
-// Iterator class declaration
-template <class T>
-class Queue<T>::Iterator {
-private:
-    typename Queue<T>::Node* m_current; // Pointer to the current node
-    friend class constIterator;
-
-
-public: 
-
-
-    /*
-     * Constructor:
-     * Initializes the iterator with a pointer to the given node.
-     *
-     * @param ptr - Pointer to a Node in the Queue.
-     */
-
-    Iterator(const typename Queue<T>::ConstIterator& other);
-
-    /*
-     * Constructor:
-     * Initializes the iterator with a pointer to the given node.
-     *
-     * @param ptr - Pointer to a Node in the Queue.
-     */
-    Iterator(typename Queue<T>::Node* ptr);
-
-    /*
-     * Overloaded dereference operator:
-     * Returns a reference to the data stored in the current node.
-     *
-     * @return Reference to the data of the current node.
-     */
-    T& operator*() const;
-
-    /*
-     * Overloaded pre-increment operator:
-     * Moves the iterator to the next node in the Queue.
-     *
-     * @return Reference to the updated iterator.
-     */
-    Iterator& operator++();
-
-    /*
-     * Overloaded inequality operator:
-     * Compares two iterators for inequality.
-     *
-     * @param other - Another Iterator object to compare with.
-     * @return True if the iterators are not pointing to the same node, false otherwise.
-     */
-    bool operator!=(const Iterator& other) const;
-
-    /*
-    * Function to obtain an iterator pointing to the beginning of the Queue.
-    *
-    * @return Iterator pointing to the beginning of the Queue.
-    */
-    Iterator  begin() const;
-
-    /*
-    * Function to obtain an iterator pointing to the end of the Queue (nullptr).
-    *
-    * @return Iterator pointing to the end of the Queue (nullptr).
-    */
-    Iterator  end() const;
-
-    class InvalidOperation{};
-};
-
-
-
-
-
-template <class T>
-class Queue<T>::ConstIterator {
-private:
-    typename Queue<T>::Node* m_current; // Pointer to the current node
-
-public:
-    /*
-     * Constructor:
-     * Initializes the iterator with a pointer to the given node.
-     *
-     * @param ptr - Pointer to a Node in the Queue.
-     */
-    ConstIterator(typename Queue<T>::Node* ptr);
-
-    /*
-     * Overloaded dereference operator:
-     * Returns a reference to the data stored in the current node.
-     *
-     * @return Reference to the data of the current node.
-     */
-    T& operator*() const;
-
-    /*
-     * Overloaded pre-increment operator:
-     * Moves the iterator to the next node in the Queue.
-     *
-     * @return Reference to the updated iterator.
-     */
-    ConstIterator& operator++();
-
-    /*
-     * Overloaded inequality operator:
-     * Compares two iterators for inequality.
-     *
-     * @param other - Another Iterator object to compare with.
-     * @return True if the iterators are not pointing to the same node, false otherwise.
-     */
-    bool operator!=(const ConstIterator& other) const;
-    class InvalidOperation{};
-};
-
-/*
- * Constructor implementation.
- */
-template <class T>
-Queue<T>::ConstIterator::ConstIterator(typename Queue<T>::Node* ptr) : m_current(ptr) {}
-
-/*
- * Overloaded dereference operator implementation.
- */
-template <class T>
-T& Queue<T>::ConstIterator::operator*() const {
-    return m_current->data; // Return reference to the data of the current node
-}
-
-/*
- * Overloaded pre-increment operator implementation.
- */
-template <class T>
-typename Queue<T>::ConstIterator& Queue<T>::ConstIterator::operator++() {
-    m_current = m_current->next; // Move the iterator to the next node
-    return *this; // Return reference to the updated iterator
-}
-
-/*
- * Overloaded inequality operator implementation.
- */
-template <class T>
-bool Queue<T>::ConstIterator::operator!=(const ConstIterator& other) const {
-    return m_current != other.m_current; // Compare if the iterators are not pointing to the same node
-}
