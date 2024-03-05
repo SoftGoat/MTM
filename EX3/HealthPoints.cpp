@@ -167,6 +167,10 @@ HealthPoints operator-(int health, const HealthPoints& healthPoints){
     return newHealth;
 }
 
+bool operator==(int health, const HealthPoints& healthPoints){
+    return health == healthPoints.m_health;
+}
+
 std::ostream& operator<<(std::ostream& os, const HealthPoints& health){
     os << health.m_health << "(" << health.m_maxHealth<<")";
     return os;

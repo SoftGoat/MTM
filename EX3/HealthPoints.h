@@ -239,6 +239,18 @@ public:
 
     friend HealthPoints operator-(int health1, const HealthPoints& health2);
 
+    /*
+     * Friend Function: Equality Operator (==):
+        * Compares the health points with the given value for equality.
+        * 
+        * @param health1 - Health points to compare.
+        * @param health2 - HealthPoints object to compare.
+        * @return Boolean indicating if health points are equal.
+     
+     */
+
+    friend bool operator==(int health1, const HealthPoints& health2);
+
     class InvalidArgument{};
 
 private:
