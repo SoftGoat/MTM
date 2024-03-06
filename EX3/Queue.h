@@ -34,14 +34,7 @@ public:
      * @param queue - Another Queue object to copy.
      */
     Queue(const Queue& queue) {
-        if (queue.m_head == nullptr) { // Check if the queue is empty
-        m_head = nullptr;
-        m_tail = nullptr;
-        m_length = 0;
-        return;
-        }
         Node* temp0 = new Node(queue.m_head->data);
-        clear();
         Node* temp = queue.m_head;
         m_head = temp0;
         m_tail = m_head;
@@ -191,15 +184,15 @@ private:
     * @return void
     */
     void clear() {
-        Node* temp = m_head;
-        while (temp != nullptr) {
-            Node* next = temp->next;
+        while (m_head != nullptr&&m_length>0) {
+            Node* temp = m_head;
+            m_head = m_head->next;
             delete temp;
-            temp = next;
+            m_length--; 
         }
-        m_head = nullptr; 
-        m_tail = nullptr; 
-        m_length = 0; 
+        m_head = nullptr;
+        m_tail = nullptr;
+        m_length = 0;
     }
 
 
@@ -258,13 +251,12 @@ public:
      */
     template <class U>
     friend Queue<T> transform(const Queue<T>& q, T (*transformer)(U)) {
-        Queue<T> transformedQueue = q; // Make a copy of the input queue
-        typename Queue<T>::Node* temp = transformedQueue.m_head;
+        typename Queue<T>::Node* temp = q.m_head;
         while (temp != nullptr) {
             temp->data = transformer(temp->data);
             temp = temp->next;
         }
-        return transformedQueue;
+        return q;
     }
 
     /*
@@ -330,6 +322,9 @@ public:
          * @return Reference to the updated iterator.
          */
         Iterator& operator++() {
+            if(m_current == nullptr){
+                throw typename  Iterator::InvalidOperation();
+            }
             m_current = m_current->next;
             return *this;
         }
@@ -352,6 +347,7 @@ public:
     private:
         typename Queue<T>::Node* m_current; // Pointer to the current node
         friend class Iterator;
+        
 
     public:
         /*
@@ -379,9 +375,13 @@ public:
          * @return Reference to the updated iterator.
          */
         ConstIterator& operator++() {
+            if(m_current == nullptr){
+                throw typename ConstIterator::InvalidOperation();
+            }
             m_current = m_current->next;
             return *this;
         }
+
 
         /*
          * Overloaded inequality operator:
