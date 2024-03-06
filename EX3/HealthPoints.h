@@ -258,6 +258,6 @@ private:
 
     int m_health; // Current health points
     int m_maxHealth; // Maximum health points
-    const int MINIMUM_MAX_HEALTH = 1; // Minimum allowed value for maximum health
+    const int MINIMUM_MAX_HEALTH = 0; // Minimum allowed value for maximum health
     const int DEFAULT_HEALTH = 100; // Default value for health points
 };

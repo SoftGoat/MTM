@@ -20,12 +20,12 @@ public:
      * Cleans up resources used by the Queue.
      */
     ~Queue() {
-        while (m_head != nullptr) {
-            Node* temp = m_head->next;
-            delete m_head;
-            m_head = temp;
-        }
+        clear();
     }
+
+
+
+
 
     /*
      * Copy Constructor:
@@ -34,15 +34,14 @@ public:
      * @param queue - Another Queue object to copy.
      */
     Queue(const Queue& queue) {
+        if (queue.m_head == nullptr) { // Check if the queue is empty
+        m_head = nullptr;
+        m_tail = nullptr;
+        m_length = 0;
+        return;
+        }
         Node* temp0 = new Node(queue.m_head->data);
-        if (temp0 == nullptr) {
-            throw std::bad_alloc();
-        }
-        while (m_head != nullptr) {
-            Node* temp = m_head->next;
-            delete m_head;
-            m_head = temp;
-        }
+        clear();
         Node* temp = queue.m_head;
         m_head = temp0;
         m_tail = m_head;
@@ -65,15 +64,15 @@ public:
      * @return Reference to this Queue after assignment.
      */
     Queue& operator=(const Queue& queue) {
+
+        if (queue.m_head == nullptr) { // Check if the queue is empty
+            m_head = nullptr;
+            m_tail = nullptr;
+            m_length = 0;
+        return *this;
+        }
         Node* temp0 = new Node(queue.m_head->data);
-        if (temp0 == nullptr) {
-            throw std::bad_alloc();
-        }
-        while (m_head != nullptr) {
-            Node* temp = m_head->next;
-            delete m_head;
-            m_head = temp;
-        }
+        clear();
         Node* temp = queue.m_head;
         m_head = temp0;
         m_tail = m_head;
@@ -184,6 +183,26 @@ public:
     class InvalidOperation{};
 
 private:
+    /*  
+    * clear:
+    * Clears the Queue and frees the memory used by the elements.
+    * The Queue is left in an empty state.
+    * This function is called by the destructor and the assignment operator.
+    * @return void
+    */
+    void clear() {
+        Node* temp = m_head;
+        while (temp != nullptr) {
+            Node* next = temp->next;
+            delete temp;
+            temp = next;
+        }
+        m_head = nullptr; 
+        m_tail = nullptr; 
+        m_length = 0; 
+    }
+
+
     struct Node {
         T data;
         Node* next;
@@ -191,6 +210,9 @@ private:
         Node(T data) {
             this->data = data;
             this->next = nullptr;
+        }
+
+        ~Node() {
         }
     };
 

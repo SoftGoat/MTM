@@ -7,7 +7,7 @@
 HealthPoints::HealthPoints(int health){
   try{
     if(health<MINIMUM_MAX_HEALTH){
-      throw "HealthPoints::InvalidArgument";
+      throw HealthPoints::InvalidArgument();
     }
     m_health = health;
     m_maxHealth = health;
