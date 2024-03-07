@@ -100,53 +100,49 @@ HealthPoints& HealthPoints::operator-=(const HealthPoints& health){
     return *this;
 }
 
-bool HealthPoints::operator==(int health){
-    return m_health == health;
-}
 
-bool HealthPoints::operator==(const HealthPoints& health) {
+const bool HealthPoints::operator==(const HealthPoints& health) const{
     return m_health == health.m_health;
 }
 
-bool HealthPoints::operator!=(int health){
+const bool HealthPoints::operator!=(const int health)const {
     return m_health != health;
 }
 
-bool HealthPoints::operator!=(const HealthPoints& health) {
+const bool HealthPoints::operator!=(const HealthPoints& health) {
     return m_health != health.m_health;
 }
 
-bool HealthPoints::operator<(int health){
+const bool HealthPoints::operator<(const int health)const{
     return m_health < health;
 }
 
-bool HealthPoints::operator<(const HealthPoints& health){
+const bool HealthPoints::operator<(const HealthPoints& health)const{
     return m_health < health.m_health;
 }
 
 
-
-bool HealthPoints::operator>(int health){
+const bool HealthPoints::operator>(int health)const{
     return m_health > health;
 }
 
-bool HealthPoints::operator>(const HealthPoints& health){
+const bool HealthPoints::operator>(const HealthPoints& health)const{
     return m_health > health.m_health;
 }
 
-bool HealthPoints::operator<=(int health){
+const bool HealthPoints::operator<=(int health)const{
     return m_health <= health;
 }
 
-bool HealthPoints::operator<=(const HealthPoints& health){
+const bool HealthPoints::operator<=(const HealthPoints& health)const{
     return m_health <= health.m_health;
 }
 
-bool HealthPoints::operator>=(int health){
+const bool HealthPoints::operator>=(int health)const{
     return m_health >= health;
 }   
 
-bool HealthPoints::operator>=(const HealthPoints& health){
+const bool HealthPoints::operator>=(const HealthPoints& health)const{
     return m_health >= health.m_health;
 }
 
@@ -168,7 +164,7 @@ HealthPoints operator-(int health, const HealthPoints& healthPoints){
     return newHealth;
 }
 
-bool operator==(int health, const HealthPoints& healthPoints){
+bool operator==(const int health, const HealthPoints& healthPoints){
     return health == healthPoints.m_health;
 }
 

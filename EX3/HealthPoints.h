@@ -105,14 +105,7 @@ public:
 
     HealthPoints& operator-=(const HealthPoints& health);
 
-    /*
-     * Equality Operator (==):
-     * Compares the health points with the given value for equality.
-     *
-     * @param health - Health points to compare.
-     * @return Boolean indicating if health points are equal.
-     */
-    bool operator==(int health);
+
 
         /*
         * Equality Operator (==):
@@ -120,7 +113,7 @@ public:
         * @param HealthPoints - Health points to compare.
         * @return Boolean indicating if health points are equal.
         */
-    bool operator==(const HealthPoints& health);
+    const bool operator==(const HealthPoints& health) const;
 
     /*
      * Inequality Operator (!=):
@@ -129,7 +122,7 @@ public:
      * @param health - Health points to compare.
      * @return Boolean indicating if health points are not equal.
      */
-    bool operator!=(int health);
+    const bool operator!=(const int health)const;
 
         /*
         * Inequality Operator (!=) :
@@ -137,7 +130,7 @@ public:
         * @param HealthPoints - Health points to compare.
         * @return Boolean indicating if health points are not equal.    
         */
-    bool operator!=(const HealthPoints& health);
+    const bool operator!=(const HealthPoints& health);
 
     /*
      * Less Than Operator (<):
@@ -145,7 +138,7 @@ public:
      * @param health - Health points to compare.
      * @return Boolean indicating if health points are less than.
      */
-    bool operator<(int health);
+    const bool operator<(const int health)const;
 
         /*
         * Less Than Operator (<) :
@@ -153,7 +146,7 @@ public:
         * @param HealthPoints - Health points to compare.
         * @return Boolean indicating if health points are less than.
         */
-    bool operator<(const HealthPoints& health);
+    const bool operator<(const HealthPoints& health)const;
 
     /*
      * Greater Than Operator (>):
@@ -161,7 +154,7 @@ public:
      * @param health - Health points to compare.
      * @return Boolean indicating if health points are greater than.
      */
-    bool operator>(int health);
+    const bool operator>(const int health)const;
 
         /*
         * Greater Than Operator (>) :
@@ -169,7 +162,7 @@ public:
         * @param HealthPoints - Health points to compare.
         * @return Boolean indicating if health points are greater than.
         */
-    bool operator>(const HealthPoints& health);
+    const bool operator>(const HealthPoints& health)const;
 
     /*
      * Less Than or Equal To Operator (<=):
@@ -178,7 +171,7 @@ public:
      * @param health - Health points to compare.
      * @return Boolean indicating if health points are less than or equal to.
      */
-    bool operator<=(int health);
+    const bool operator<=(const int health)const;
 
     /*
      * Greater Than or Equal To Operator (>=):
@@ -187,7 +180,7 @@ public:
      * @return Boolean indicating if health points are greater than or equal to.
      */
 
-    bool operator<=(const HealthPoints& health);
+    const bool operator<=(const HealthPoints& health)const;
 
     /*
      * Greater Than or Equal To Operator (>=):
@@ -196,7 +189,7 @@ public:
      * @param health - Health points to compare.
      * @return Boolean indicating if health points are greater than or equal to.
      */
-    bool operator>=(int health);
+    const bool operator>=(const int health)const;
 
     /*
      * Greater Than or Equal To Operator (>=):
@@ -206,7 +199,7 @@ public:
      * @return Boolean indicating if health points are greater than or equal to.
      */
 
-    bool operator>=(const HealthPoints& health);
+    const bool operator>=(const HealthPoints& health)const;
 
     /*
      * Friend Function: Stream Insertion Operator (<<):
@@ -228,7 +221,7 @@ public:
      */
 
 
-    friend bool operator>(int health1 ,const HealthPoints& health2);
+    friend bool operator>(const int health1 ,const HealthPoints& health2);
 
     /*
      * Friend Function: Less Than Operator (<):
@@ -240,7 +233,7 @@ public:
      */
 
 
-    friend bool operator<(int health1 ,const HealthPoints& health2);
+    friend bool operator<(const int health1 ,const HealthPoints& health2);
 
 
 
@@ -275,7 +268,7 @@ public:
      
      */
 
-    friend bool operator==(int health1, const HealthPoints& health2);
+    friend bool operator==(const int health1, const HealthPoints& health2);
 
     class InvalidArgument{};
 
