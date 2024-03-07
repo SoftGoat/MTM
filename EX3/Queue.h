@@ -114,6 +114,21 @@ public:
     }
 
 
+        /*
+     * front:
+     * Retrieves and returns the value of the first element in the Queue without removing it.
+     * Throws a std::out_of_range exception if the Queue is empty.
+     *
+     * @return const reference to the first element in the Queue. 
+     */
+    const T& front()const {
+        if (m_head == nullptr) {
+            throw EmptyQueue(); //queue is empty
+        }
+        return m_head->data;
+    }
+
+
     /*
      * popFront:
      * Removes the first element from the Queue.
