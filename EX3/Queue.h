@@ -52,27 +52,24 @@ public:
      * @return Reference to this Queue after assignment.
      */
     Queue& operator=(const Queue& queue) {
-
-        if (queue.m_head == nullptr) { // Check if the queue is empty
-            m_head = nullptr;
-            m_tail = nullptr;
-            m_length = 0;
-        return *this;
-        }
-        Node* temp0 = new Node(queue.m_head->data);
-        clear();
-        Node* temp = queue.m_head;
-        m_head = temp0;
-        m_tail = m_head;
-        while (temp->next != nullptr) {
-            m_tail->next = new Node(temp->data);
-            if (m_tail == nullptr) {
-                throw std::bad_alloc();
+        if (this != &queue) { // Check for self-assignment
+            if (queue.m_head == nullptr) { // Check if the queue is empty
+                m_head = nullptr;
+                m_tail = nullptr;
+                m_length = 0;
+                return *this;
             }
-            m_tail = m_tail->next;
-            temp = temp->next;
+            m_head = new Node(queue.m_head->data);
+            Node* temp = queue.m_head->next;
+            Node* current = m_head;
+            while (temp != nullptr) {
+                current->next = new Node(temp->data);
+                current = current->next;
+                temp = temp->next;
+            }
+            m_tail = current;
+            m_length = queue.m_length;
         }
-        m_length = queue.m_length;
         return *this;
     }
 
@@ -185,6 +182,15 @@ public:
     class EmptyQueue {};
     class InvalidOperation{};
 
+
+    void print () const {
+        Node* temp = m_head;
+            while (temp != nullptr) {
+                std::cout << temp->data << " ";
+                temp = temp->next;
+    }       
+        std::cout << std::endl;  
+   }
 private:
     /*  
     * clear:
@@ -193,6 +199,7 @@ private:
     * This function is called by the destructor and the assignment operator.
     * @return void
     */
+
     void clear() {
         while (m_head != nullptr&&m_length>0) {
             Node* temp = m_head;
@@ -222,6 +229,7 @@ private:
     Node* m_head;
     Node* m_tail;
     int m_length;
+
 
 public:
 

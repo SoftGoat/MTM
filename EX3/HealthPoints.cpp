@@ -1,41 +1,29 @@
-#include <iostream>
-#include <cstring>
 #include "HealthPoints.h"
 
-
-
-HealthPoints::HealthPoints(int health){
-  try{
-    if(health<MINIMUM_MAX_HEALTH){
-      throw HealthPoints::InvalidArgument();
+HealthPoints::HealthPoints(int health) {
+    try {
+        if (health <= MINIMUM_MAX_HEALTH) {
+            throw HealthPoints::InvalidArgument();
+        }
+        m_health = health;
+        m_maxHealth = health;
+    } catch (const std::invalid_argument& e) {
+        m_health = DEFAULT_HEALTH;
+        m_maxHealth = DEFAULT_HEALTH;
     }
-    m_health = health;
-    m_maxHealth = health;
-  }
-  catch (const std::invalid_argument& e) {
-            m_health = DEFAULT_HEALTH;
-            m_maxHealth = DEFAULT_HEALTH;
-    }
-
 }
 
-HealthPoints::HealthPoints(){
-  m_health = DEFAULT_HEALTH;
-  m_maxHealth = DEFAULT_HEALTH;
+HealthPoints::HealthPoints() {
+    m_health = DEFAULT_HEALTH;
+    m_maxHealth = DEFAULT_HEALTH;
 }
 
-
-
-
-
-HealthPoints& HealthPoints::operator=(const HealthPoints& health) {
+HealthPoints::HealthPoints(const HealthPoints& health) {
     m_health = health.m_health;
     m_maxHealth = health.m_maxHealth;
-    return *this;
 }
 
-
-
+/*
 HealthPoints& HealthPoints::operator+(int health){
     m_health += health;
     if(m_health>m_maxHealth){
@@ -52,21 +40,6 @@ HealthPoints& HealthPoints::operator+(const HealthPoints& health){
     return *this;
 }
 
-HealthPoints& HealthPoints::operator+=(int health){
-    m_health += health;
-    if(m_health>m_maxHealth){
-        m_health = m_maxHealth;
-    }
-    return *this;
-}
-
-HealthPoints& HealthPoints::operator+=(const HealthPoints& health){
-    m_health += health.m_health;
-    if(m_health>m_maxHealth){
-        m_health = m_maxHealth;
-    }
-    return *this;
-}
 
 HealthPoints& HealthPoints::operator-(int health){
     m_health -= health;
@@ -84,28 +57,66 @@ HealthPoints& HealthPoints::operator-(const HealthPoints& health){
     return *this;
 }
 
-HealthPoints& HealthPoints::operator-=(int health){
+*/
+
+
+HealthPoints& HealthPoints::operator=(const HealthPoints& health) {
+    m_health = health.m_health;
+    m_maxHealth = health.m_maxHealth;
+    return *this;
+}
+
+
+HealthPoints& HealthPoints::operator+=(const int health) {
+    m_health += health;
+    if (m_health > m_maxHealth) {
+        m_health = m_maxHealth;
+    }
+    if (m_health < MINIMUM_MAX_HEALTH) {
+        m_health = MINIMUM_MAX_HEALTH;
+    }
+    return *this;
+}
+
+HealthPoints& HealthPoints::operator+=(const HealthPoints& health) {
+    m_health += health.m_health;
+    if (m_health > m_maxHealth) {
+        m_health = m_maxHealth;
+    }
+    if (m_health < MINIMUM_MAX_HEALTH) {
+        m_health = MINIMUM_MAX_HEALTH;
+    }
+    return *this;
+}
+
+
+HealthPoints& HealthPoints::operator-=(const int health) {
     m_health -= health;
-    if(m_health<MINIMUM_MAX_HEALTH){
+    if (m_health < MINIMUM_MAX_HEALTH) {
         m_health = MINIMUM_MAX_HEALTH;
+    }
+    if (m_health > m_maxHealth) {
+        m_health = m_maxHealth;
     }
     return *this;
 }
 
-HealthPoints& HealthPoints::operator-=(const HealthPoints& health){
+HealthPoints& HealthPoints::operator-=(const HealthPoints& health) {
     m_health -= health.m_health;
-    if(m_health<MINIMUM_MAX_HEALTH){
+    if (m_health < MINIMUM_MAX_HEALTH) {
         m_health = MINIMUM_MAX_HEALTH;
+    }
+    if (m_health > m_maxHealth) {
+        m_health = m_maxHealth;
     }
     return *this;
 }
 
-
-const bool HealthPoints::operator==(const HealthPoints& health) const{
+const bool HealthPoints::operator==(const HealthPoints& health) const {
     return m_health == health.m_health;
 }
 
-const bool HealthPoints::operator!=(const int health)const {
+const bool HealthPoints::operator!=(const int health) const {
     return m_health != health;
 }
 
@@ -113,72 +124,108 @@ const bool HealthPoints::operator!=(const HealthPoints& health) {
     return m_health != health.m_health;
 }
 
-const bool HealthPoints::operator<(const int health)const{
+const bool HealthPoints::operator<(const int health) const {
     return m_health < health;
 }
 
-const bool HealthPoints::operator<(const HealthPoints& health)const{
+const bool HealthPoints::operator<(const HealthPoints& health) const {
     return m_health < health.m_health;
 }
 
-
-const bool HealthPoints::operator>(int health)const{
+const bool HealthPoints::operator>(const int health) const {
     return m_health > health;
 }
 
-const bool HealthPoints::operator>(const HealthPoints& health)const{
+const bool HealthPoints::operator>(const HealthPoints& health) const {
     return m_health > health.m_health;
 }
 
-const bool HealthPoints::operator<=(int health)const{
+const bool HealthPoints::operator<=(const int health) const {
     return m_health <= health;
 }
 
-const bool HealthPoints::operator<=(const HealthPoints& health)const{
+const bool HealthPoints::operator<=(const HealthPoints& health) const {
     return m_health <= health.m_health;
 }
 
-const bool HealthPoints::operator>=(int health)const{
+const bool HealthPoints::operator>=(const int health) const {
     return m_health >= health;
-}   
+}
 
-const bool HealthPoints::operator>=(const HealthPoints& health)const{
+const bool HealthPoints::operator>=(const HealthPoints& health) const {
     return m_health >= health.m_health;
 }
 
-HealthPoints operator+(int health, const HealthPoints& healthPoints){
+HealthPoints operator+(int health, const HealthPoints& healthPoints) {
     HealthPoints newHealth = healthPoints;
     newHealth.m_health += health;
-    if(newHealth.m_health>newHealth.m_maxHealth){
+    if (newHealth.m_health > newHealth.m_maxHealth) {
         newHealth.m_health = newHealth.m_maxHealth;
     }
-    return newHealth;
-}
+    if (newHealth.m_health < newHealth.MINIMUM_MAX_HEALTH) {
+        newHealth.m_health = newHealth.MINIMUM_MAX_HEALTH;
+        throw HealthPoints::InvalidArgument();
 
-HealthPoints operator-(int health, const HealthPoints& healthPoints){
-    HealthPoints newHealth = healthPoints;
-    newHealth.m_health -= health;
-    if(newHealth.m_health<healthPoints.MINIMUM_MAX_HEALTH){
-        newHealth.m_health = healthPoints.MINIMUM_MAX_HEALTH;
     }
     return newHealth;
 }
 
-bool operator==(const int health, const HealthPoints& healthPoints){
+HealthPoints operator-(int health, const HealthPoints& healthPoints) {
+    HealthPoints newHealth = healthPoints;
+    newHealth.m_health -= health;
+    if (newHealth.m_health < newHealth.MINIMUM_MAX_HEALTH) {
+        newHealth.m_health = newHealth.MINIMUM_MAX_HEALTH;
+    }
+
+    if (newHealth.m_health > newHealth.m_maxHealth) {
+        newHealth.m_health = newHealth.m_maxHealth;
+        throw HealthPoints::InvalidArgument();
+
+    }
+    return newHealth;
+}
+
+HealthPoints operator+(const HealthPoints& health1, const HealthPoints& health2) {
+    HealthPoints newHealth = health1;
+    newHealth.m_health += health2.m_health;
+    if (newHealth.m_health > newHealth.m_maxHealth) {
+        newHealth.m_health = newHealth.m_maxHealth;
+    }
+    if (newHealth.m_health < newHealth.MINIMUM_MAX_HEALTH) {
+        newHealth.m_health = newHealth.MINIMUM_MAX_HEALTH;
+        throw HealthPoints::InvalidArgument();
+
+    }
+    return newHealth;
+}
+
+HealthPoints operator-(const HealthPoints& health1, const HealthPoints& health2) {
+    HealthPoints newHealth = health1;
+    newHealth.m_health -= health2.m_health;
+    if (newHealth.m_health < newHealth.MINIMUM_MAX_HEALTH) {
+        newHealth.m_health = newHealth.MINIMUM_MAX_HEALTH;
+    }
+    if (newHealth.m_health > newHealth.m_maxHealth) {
+        newHealth.m_health = newHealth.m_maxHealth;
+        throw HealthPoints::InvalidArgument();
+
+    }
+    return newHealth;
+}
+
+bool operator==(const int health, const HealthPoints& healthPoints) {
     return health == healthPoints.m_health;
 }
 
-std::ostream& operator<<(std::ostream& os, const HealthPoints& health){
-    os << health.m_health << "(" << health.m_maxHealth<<")";
+std::ostream& operator<<(std::ostream& os, const HealthPoints& health) {
+    os << health.m_health << "(" << health.m_maxHealth << ")";
     return os;
-}   
+}
 
-
-bool operator>(int health1 ,const HealthPoints& health2){
+bool operator>(int health1, const HealthPoints& health2) {
     return health1 > health2.m_health;
 }
 
-
-bool operator<(int health1 ,const HealthPoints& health2){
+bool operator<(int health1, const HealthPoints& health2) {
     return health1 < health2.m_health;
 }
