@@ -22,11 +22,6 @@ public:
     ~Queue() {
         clear();
     }
-
-
-
-
-
     /*
      * Copy Constructor:
      * Creates a new Queue that is a copy of another Queue.
@@ -225,8 +220,8 @@ public:
      * @param predicate - Predicate function to apply to each element in the Queue.
      * @return New Queue containing only the elements for which the predicate function returns true.
      */
-    template <class U>
-    friend Queue<T> filter(const Queue<T>& q, bool (*predicate)(U)) {
+    template <class Predicate>
+    friend Queue<T> filter(const Queue<T>& q, Predicate predicate) {
         Queue<T> filteredQueue;
         typename Queue<T>::Node* temp = q.m_head;
         while (temp != nullptr) {
@@ -249,8 +244,8 @@ public:
      * @param transformer - Function to apply to each element in the Queue.
      * @return Reference to this Queue after transformation.
      */
-    template <class U>
-    friend Queue<T> transform(const Queue<T>& q, T (*transformer)(U)) {
+    template <class Transformer>
+    friend Queue<T> transform(const Queue<T>& q, Transformer transformer) {
         typename Queue<T>::Node* temp = q.m_head;
         while (temp != nullptr) {
             temp->data = transformer(temp->data);
@@ -272,8 +267,8 @@ public:
      * @param reducer - Reducer function to apply to each element in the Queue.
      * @return Result of the reduction.
      */ 
-    template <class U>
-    friend T reduce(const Queue<T>& q, U initial,U (*reducer)(U, U)) {
+    template <class Reducer>
+    friend T reduce(const Queue<T>& q, T initial,Reducer (*reducer)(Reducer, Reducer)) {
         if (q.m_head == nullptr) {
             throw EmptyQueue(); // Queue is empty
         }
@@ -396,6 +391,9 @@ public:
 
         class InvalidOperation{};
     };
+
+
+
 
 
 

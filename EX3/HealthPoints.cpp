@@ -125,6 +125,7 @@ bool HealthPoints::operator<(const HealthPoints& health){
 }
 
 
+
 bool HealthPoints::operator>(int health){
     return m_health > health;
 }
@@ -175,3 +176,13 @@ std::ostream& operator<<(std::ostream& os, const HealthPoints& health){
     os << health.m_health << "(" << health.m_maxHealth<<")";
     return os;
 }   
+
+
+bool operator>(int health1 ,const HealthPoints& health2){
+    return health1 > health2.m_health;
+}
+
+
+bool operator<(int health1 ,const HealthPoints& health2){
+    return health1 < health2.m_health;
+}

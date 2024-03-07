@@ -219,6 +219,32 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const HealthPoints& health);
 
     /*
+     * Friend Function: Less Than Operator (<):
+     * Compares the health points with the given value for less than.
+     *
+     * @param health1 - Health points to compare.
+     * @param health2 - HealthPoints object to compare.
+     * @return Boolean indicating if health points are less than.
+     */
+
+
+    friend bool operator>(int health1 ,const HealthPoints& health2);
+
+    /*
+     * Friend Function: Less Than Operator (<):
+     * Compares the health points with the given value for less than.
+     *
+     * @param health1 - Health points to compare.
+     * @param health2 - HealthPoints object to compare.
+     * @return Boolean indicating if health points are less than.
+     */
+
+
+    friend bool operator<(int health1 ,const HealthPoints& health2);
+
+
+
+    /*
      * Friend Function: Addition Operator (+):
      * Adds the given health points to the current health.
      *
