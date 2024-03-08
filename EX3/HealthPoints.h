@@ -31,10 +31,10 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const HealthPoints& health);
     friend bool operator>(const int health1, const HealthPoints& health2);
     friend bool operator<(const int health1, const HealthPoints& health2);
-    friend HealthPoints operator+(int health1, const HealthPoints& health2);
-    friend HealthPoints operator+(const HealthPoints& health1, const HealthPoints& health2);
-    friend HealthPoints operator-(int health1, const HealthPoints& health2);
-    friend HealthPoints operator-(const HealthPoints& health1, const HealthPoints& health2);
+    friend HealthPoints operator+(const int health1, const HealthPoints& health2);
+    friend HealthPoints operator+(const HealthPoints& health1, const int health2);
+    friend HealthPoints operator-(const int health1, const HealthPoints& health2);
+    friend HealthPoints operator-(const HealthPoints& health1, const int health2);
     friend bool operator==(const int health1, const HealthPoints& health2);
 
     class InvalidArgument {};
