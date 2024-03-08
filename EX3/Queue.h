@@ -59,15 +59,10 @@ public:
                 m_length = 0;
                 return *this;
             }
-            m_head = new Node(queue.m_head->data);
-            Node* temp = queue.m_head->next;
-            Node* current = m_head;
-            while (temp != nullptr) {
-                current->next = new Node(temp->data);
-                current = current->next;
-                temp = temp->next;
+            clear();
+            for(Iterator i = queue.begin(); i!=queue.end(); ++i){
+                pushBack(*i);
             }
-            m_tail = current;
             m_length = queue.m_length;
         }
         return *this;
@@ -201,15 +196,9 @@ private:
     */
 
     void clear() {
-        while (m_head != nullptr&&m_length>0) {
-            Node* temp = m_head;
-            m_head = m_head->next;
-            delete temp;
-            m_length--; 
+        while(m_length > 0){
+            popFront();
         }
-        m_head = nullptr;
-        m_tail = nullptr;
-        m_length = 0;
     }
 
 
@@ -246,12 +235,10 @@ public:
     template <class Predicate>
     friend Queue<T> filter(const Queue<T>& q, Predicate predicate) {
         Queue<T> filteredQueue;
-        typename Queue<T>::Node* temp = q.m_head;
-        while (temp != nullptr) {
-            if (predicate(temp->data)) {
-                filteredQueue.pushBack(temp->data);
+        for(Iterator i = q.begin(); i!=q.end(); ++i){
+            if (predicate(*i)) {
+                filteredQueue.pushBack(*i);
             }
-            temp = temp->next;
         }
         return filteredQueue;
     }
@@ -269,11 +256,9 @@ public:
      */
     template <class Transformer>
     friend Queue<T> transform(const Queue<T>& q, Transformer transformer) {
-        typename Queue<T>::Node* temp = q.m_head;
-        while (temp != nullptr) {
-            temp->data = transformer(temp->data);
-            temp = temp->next;
-        }
+            for(Iterator i = q.begin(); i!=q.end(); ++i){
+                *i = transformer(*i);
+            }
         return q;
     }
 
@@ -296,10 +281,8 @@ public:
             throw EmptyQueue(); // Queue is empty
         }
         T accumulate = initial;
-        typename Queue<T>::Node* temp = q.m_head;
-        while (temp != nullptr) {
-            accumulate = reducer(temp->data, accumulate);
-            temp = temp->next;
+        for(ConstIterator i = q.begin(); i!=q.end(); ++i){
+            accumulate = reducer(accumulate,*i);
         }
         return accumulate;
     }
