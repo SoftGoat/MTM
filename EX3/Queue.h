@@ -222,70 +222,7 @@ private:
 
 public:
 
-    /*
-     * filter:
-     * Filters the elements of the Queue using a given predicate function.
-     * The original Queue is not modified.
-     * The given predicate function is applied to each element in the Queue.
-     * The function should take a single argument of type T and return a boolean value.
-     * A new Queue is created containing only the elements for which the predicate function returns true.
-     * @param predicate - Predicate function to apply to each element in the Queue.
-     * @return New Queue containing only the elements for which the predicate function returns true.
-     */
-    template <class Predicate>
-    friend Queue<T> filter(const Queue<T>& q, Predicate predicate) {
-        Queue<T> filteredQueue;
-        for(Iterator i = q.begin(); i!=q.end(); ++i){
-            if (predicate(*i)) {
-                filteredQueue.pushBack(*i);
-            }
-        }
-        return filteredQueue;
-    }
-
-
-    /*
-     * transform:
-     * Transforms the elements of the Queue using a given function.
-     * The original Queue is modified in place.
-     * The given function is applied to each element in the Queue.
-     * The function should take a single argument of type T and return a value of type T.
-     * The original element is replaced with the result of the function.
-     * @param transformer - Function to apply to each element in the Queue.
-     * @return Reference to this Queue after transformation.
-     */
-    template <class Transformer>
-    friend Queue<T> transform(const Queue<T>& q, Transformer transformer) {
-            for(Iterator i = q.begin(); i!=q.end(); ++i){
-                *i = transformer(*i);
-            }
-        return q;
-    }
-
-    /*
-     * reduce:
-     * Reduces the elements of the Queue using a given reducer function.
-     * The original Queue is not modified.
-     * The given reducer function is applied to each element in the Queue.
-     * The function should take two arguments of type T and return a value of type T.
-     * The result of the function is used as the first argument in the next call to the function.
-     * The initial value is used as the second argument in the first call to the function.
-     * @param Queue - Queue to reduce.
-     * @param initial - Initial value to use in the first call to the reducer function.
-     * @param reducer - Reducer function to apply to each element in the Queue.
-     * @return Result of the reduction.
-     */ 
-    template <class Reducer>
-    friend T reduce(const Queue<T>& q, T initial,Reducer (*reducer)(Reducer, Reducer)) {
-        if (q.m_head == nullptr) {
-            throw EmptyQueue(); // Queue is empty
-        }
-        T accumulate = initial;
-        for(ConstIterator i = q.begin(); i!=q.end(); ++i){
-            accumulate = reducer(accumulate,*i);
-        }
-        return accumulate;
-    }
+  
 
     // Iterator class declaration
     class Iterator {
@@ -405,3 +342,69 @@ public:
 
 
 };
+
+
+
+  /*
+     * filter:
+     * Filters the elements of the Queue using a given predicate function.
+     * The original Queue is not modified.
+     * The given predicate function is applied to each element in the Queue.
+     * The function should take a single argument of type T and return a boolean value.
+     * A new Queue is created containing only the elements for which the predicate function returns true.
+     * @param predicate - Predicate function to apply to each element in the Queue.
+     * @return New Queue containing only the elements for which the predicate function returns true.
+     */
+    template <class Predicate, class T>
+    Queue<T> filter(const Queue<T>& q, Predicate predicate) {
+        Queue<T> filteredQueue;
+        for(typename Queue<T>::Iterator i = q.begin(); i!=q.end(); ++i){
+            if (predicate(*i)) {
+                filteredQueue.pushBack(*i);
+            }
+        }
+        return filteredQueue;
+    }
+
+
+    /*
+     * transform:
+     * Transforms the elements of the Queue using a given function.
+     * The original Queue is modified in place.
+     * The given function is applied to each element in the Queue.
+     * The function should take a single argument of type T and return a value of type T.
+     * The original element is replaced with the result of the function.
+     * @param transformer - Function to apply to each element in the Queue.
+     * @return Reference to this Queue after transformation.
+     */
+    template <class Transformer, class T>
+    void transform(const Queue<T>& q, Transformer transformer) {
+            for(typename Queue<T>::Iterator i = q.begin(); i!=q.end(); ++i){
+                *i = transformer(*i);
+            }
+    }
+
+    /*
+     * reduce:
+     * Reduces the elements of the Queue using a given reducer function.
+     * The original Queue is not modified.
+     * The given reducer function is applied to each element in the Queue.
+     * The function should take two arguments of type T and return a value of type T.
+     * The result of the function is used as the first argument in the next call to the function.
+     * The initial value is used as the second argument in the first call to the function.
+     * @param Queue - Queue to reduce.
+     * @param initial - Initial value to use in the first call to the reducer function.
+     * @param reducer - Reducer function to apply to each element in the Queue.
+     * @return Result of the reduction.
+     */ 
+    template <class Reducer, class T>
+    T reduce(const Queue<T>& q, T initial,Reducer (*reducer)(Reducer, Reducer)) {
+        if (!(q.begin() != q.end())) {
+            throw typename Queue<T>::EmptyQueue(); // Queue is empty
+        }
+        T accumulate = initial;
+        for(typename Queue<T>::ConstIterator i = q.begin(); i!=q.end(); ++i){
+            accumulate = reducer(accumulate,*i);
+        }
+        return accumulate;
+    }
