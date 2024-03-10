@@ -28,21 +28,47 @@ public:
      *
      * @param queue - Another Queue object to copy.
      */
-    Queue(const Queue& queue) {
-        Node* temp0 = new Node(queue.m_head->data);
-        Node* temp = queue.m_head;
-        m_head = temp0;
-        m_tail = m_head;
+Queue(const Queue& queue) {
+    // Create a new node to store the data from the head of the copied queue
+    Node* temp0 = new Node(queue.m_head->data);
+    // Pointer to iterate through the original queue
+    Node* temp = queue.m_head;
+    // Set the head of the new queue to the newly created node
+    m_head = temp0;
+    // Set the tail of the new queue to the head initially
+    m_tail = m_head;
+
+    // Try block to handle potential memory allocation failures
+    try {
+        // Iterate through the original queue until the end is reached
         while (temp->next != nullptr) {
+            // Create a new node with the data from the current node of the original queue
             m_tail->next = new Node(temp->data);
+            // Check if memory allocation failed
             if (m_tail == nullptr) {
+                // Throw a bad_alloc exception if memory allocation failed
                 throw std::bad_alloc();
             }
+            // Move the tail pointer to the newly created node
             m_tail = m_tail->next;
+            // Move to the next node in the original queue
             temp = temp->next;
         }
-        m_length = queue.m_length;
+    } catch (...) {
+        // If an exception occurs during memory allocation, clean up allocated memory
+        while (m_head != nullptr) {
+            Node* toDelete = m_head;
+            m_head = m_head->next;
+            delete toDelete;
+        }
+        // Re-throw the caught exception to propagate it further
+        throw;
     }
+    // After successful copying, update the length of the new queue
+    m_length = queue.m_length;
+}
+
+
 
     /*
      * Assignment Operator:
@@ -51,22 +77,53 @@ public:
      * @param queue - Another Queue object to assign.
      * @return Reference to this Queue after assignment.
      */
-    Queue& operator=(const Queue& queue) {
-        if (this != &queue) { // Check for self-assignment
-            if (queue.m_head == nullptr) { // Check if the queue is empty
-                m_head = nullptr;
-                m_tail = nullptr;
-                m_length = 0;
-                return *this;
+Queue& operator=(const Queue& queue) {
+    if (this != &queue) { // Check for self-assignment first
+        // Temporary queue to hold the copied content
+        Queue temp;
+
+        if (queue.m_head != nullptr) { // Check if the source queue is not empty
+            // Create the first node of the temporary queue
+            Node* tempNode = new Node(queue.m_head->data);
+            temp.m_head = tempNode;
+            Node* current = queue.m_head->next;
+
+            // Iterate through the source queue and copy nodes
+            try {
+                while (current != nullptr) {
+                    Node* newNode = new Node(current->data); // Might throw std::bad_alloc
+                    tempNode->next = newNode;
+                    tempNode = newNode;
+
+                    if (current->next == nullptr) { // If this is the last node
+                        temp.m_tail = newNode; // Set the tail of the temporary queue
+                    }
+
+                    current = current->next; // Move to the next node in the source queue
+                }
+            } catch (...) {
+                // Cleanup in case of an exception and rethrow to maintain exception neutrality
+                while (temp.m_head != nullptr) {
+                    Node* toDelete = temp.m_head;
+                    temp.m_head = temp.m_head->next;
+                    delete toDelete;
+                }
+                throw; // Rethrow the current exception
             }
-            clear();
-            for(Iterator i = queue.begin(); i!=queue.end(); ++i){
-                pushBack(*i);
-            }
-            m_length = queue.m_length;
+
+            temp.m_length = queue.m_length; // Copy the length after successful node copying
         }
-        return *this;
+        clear(); // Clear the current queue
+        // Swap the contents of the temporary queue with the current queue
+        std::swap(m_head, temp.m_head);
+        std::swap(m_tail, temp.m_tail);
+        std::swap(m_length, temp.m_length);
+
+        // The destructor of 'temp' will take care of deallocating the old nodes of 'this' queue
     }
+    return *this;
+}
+
 
     /*
      * Assignment Operator:
@@ -200,7 +257,6 @@ private:
             popFront();
         }
     }
-
 
     struct Node {
         T data;
@@ -358,7 +414,7 @@ public:
     template <class Predicate, class T>
     Queue<T> filter(const Queue<T>& q, Predicate predicate) {
         Queue<T> filteredQueue;
-        for(typename Queue<T>::Iterator i = q.begin(); i!=q.end(); ++i){
+        for(typename Queue<T>::Iterator i = q.begin(); i!=nullptr; ++i){
             if (predicate(*i)) {
                 filteredQueue.pushBack(*i);
             }
