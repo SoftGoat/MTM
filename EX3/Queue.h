@@ -29,13 +29,38 @@ public:
      * @param queue - Another Queue object to copy.
      */
 Queue(const Queue& queue) {
-    m_head = nullptr;
-    m_tail = nullptr;
-    m_length = 0;
-
-    for (ConstIterator it = queue.begin(); it != queue.end(); ++it) {
-        pushBack(*it);
+    if(queue.m_head == nullptr){
+        m_head = nullptr;
+        m_tail = nullptr;
+        m_length = 0;
+        return;
     }
+    Node* temp0 = new Node(queue.m_head->data);     // Create a new node to store the data from the head of the copied queue
+    Node* temp = queue.m_head;     // Pointer to iterate through the original queue
+    m_head = temp0;     // Set the head of the new queue to the newly created node
+    m_tail = m_head;     // Set the tail of the new queue to the head initially
+
+    // Try block to handle potential memory allocation failures
+    try {
+        // Iterate through the original queue until the end is reached
+        while (temp->next != nullptr) {
+            m_tail->next = new Node(temp->data);
+            if (m_tail == nullptr) {
+                throw std::bad_alloc();
+            }
+            m_tail = m_tail->next;
+            temp = temp->next;
+        }
+    } catch (...) {
+        // If an exception occurs during memory allocation, clean up allocated memory
+        while (m_head != nullptr) {
+            Node* toDelete = m_head;
+            m_head = m_head->next;
+            delete toDelete;
+        }
+        throw;
+    }
+    m_length = queue.m_length;
 }
 
 
@@ -405,7 +430,7 @@ public:
     template <class Reducer, class T>
     T reduce(const Queue<T>& q, T initial,Reducer (*reducer)(Reducer, Reducer)) {
         if (!(q.begin() != q.end())) {
-            throw typename Queue<T>::EmptyQueue(); // Queue is empty
+            return initial;
         }
         T accumulate = initial;
         for(typename Queue<T>::ConstIterator i = q.begin(); i!=q.end(); ++i){
