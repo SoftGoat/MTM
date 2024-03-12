@@ -85,6 +85,14 @@ bool testModuleFunctions()
 	}
 	int sum = reduce(queue6, 0, add);
 	int mul = reduce(queue6, 1, multiply); /* mul now equals 120 */
+    const Queue<int> queue7=queue6;
+    Queue<int> queue8;
+    queue8=queue6;
+    queue6.print();
+    queue7.print();
+    queue8.print();
+    transform(queue8, addThree);
+    queue8.print();
 	AGGREGATE_TEST_RESULT(testResult,(sum == 15));
 	AGGREGATE_TEST_RESULT(testResult,(mul == 120));
 

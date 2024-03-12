@@ -29,16 +29,39 @@ public:
      * @param queue - Another Queue object to copy.
      */
 Queue(const Queue& queue) {
-    m_head = nullptr;
-    m_tail = nullptr;
-    m_length = 0;
-
-    for (ConstIterator it = queue.begin(); it != queue.end(); ++it) {
-        pushBack(*it);
+    if(queue.m_head == nullptr){
+        m_head = nullptr;
+        m_tail = nullptr;
+        m_length = 0;
+        return;
     }
+    Node* temp0 = new Node(queue.m_head->data);     // Create a new node to store the data from the head of the copied queue
+    Node* temp = queue.m_head;     // Pointer to iterate through the original queue
+    m_head = temp0;     // Set the head of the new queue to the newly created node
+    m_tail = m_head;     // Set the tail of the new queue to the head initially
+
+    // Try block to handle potential memory allocation failures
+    try {
+        // Iterate through the original queue until the end is reached
+        while (temp->next != nullptr) {
+            temp=temp->next;
+            m_tail->next = new Node(temp->data);
+            if (m_tail == nullptr) {
+                throw std::bad_alloc();
+            }
+            m_tail = m_tail->next;
+        }
+    } catch (...) {
+        // If an exception occurs during memory allocation, clean up allocated memory
+        while (m_head != nullptr) {
+            Node* toDelete = m_head;
+            m_head = m_head->next;
+            delete toDelete;
+        }
+        throw;
+    }
+    m_length = queue.m_length;
 }
-
-
 
 
 
@@ -50,27 +73,51 @@ Queue(const Queue& queue) {
      * @return Reference to this Queue after assignment.
      */
 Queue& operator=(const Queue& queue) {
-    if (this != &queue) { // Check for self-assignment
-        Queue temp; // Use a temporary Queue to hold the copied elements
-           try {
-        for(ConstIterator i = queue.begin(); i!=queue.end(); ++i){
-            temp.pushBack(*i);
-        }
-    } catch (...) {
-        // Cleanup in case of an exception and rethrow to maintain exception neutrality
-        temp.clear();
-        throw; // Rethrow the current exception
-    }
-        
+    if (this != &queue) { // Check for self-assignment first
+        // Temporary queue to hold the copied content
+        Queue temp;
 
+        if (queue.m_head != nullptr) { // Check if the source queue is not empty
+            // Create the first node of the temporary queue
+            Node* tempNode = new Node(queue.m_head->data);
+            temp.m_head = tempNode;
+            Node* current = queue.m_head->next;
+
+            // Iterate through the source queue and copy nodes
+            try {
+                while (current != nullptr) {
+                    Node* newNode = new Node(current->data); // Might throw std::bad_alloc
+                    tempNode->next = newNode;
+                    tempNode = newNode;
+
+                    if (current->next == nullptr) { // If this is the last node
+                        temp.m_tail = newNode; // Set the tail of the temporary queue
+                    }
+
+                    current = current->next; // Move to the next node in the source queue
+                }
+            } catch (...) {
+                // Cleanup in case of an exception and rethrow to maintain exception neutrality
+                while (temp.m_head != nullptr) {
+                    Node* toDelete = temp.m_head;
+                    temp.m_head = temp.m_head->next;
+                    delete toDelete;
+                }
+                throw; // Rethrow the current exception
+            }
+
+            temp.m_length = queue.m_length; // Copy the length after successful node copying
+        }
         clear(); // Clear the current queue
-        std::swap(m_head, temp.m_head); // Swap the head
-        std::swap(m_tail, temp.m_tail); // Swap the tail
-        std::swap(m_length, temp.m_length); // Swap the length
+        // Swap the contents of the temporary queue with the current queue
+        std::swap(m_head, temp.m_head);
+        std::swap(m_tail, temp.m_tail);
+        std::swap(m_length, temp.m_length);
+
+        // The destructor of 'temp' will take care of deallocating the old nodes of 'this' queue
     }
     return *this;
 }
-
 
 
     /*
@@ -80,18 +127,21 @@ Queue& operator=(const Queue& queue) {
      * @param element - New value to assign to the first element in the Queue.
      * @return Reference to this Queue after assignment.
      */
-void pushBack(T element) {
-    Node* newNode = new Node(element); // std::bad_alloc is thrown if memory allocation fails
-    if (m_head == nullptr) {
-        m_head = newNode;
-        m_tail = newNode;
-    } else {
-        m_tail->next = newNode;
-        m_tail = newNode; // Directly set m_tail to the new node
+    void pushBack(T element) {
+        Node* newNode = new Node(element);
+        if (newNode == nullptr) {
+            throw std::bad_alloc();
+        }
+        if (m_head == nullptr) {
+            m_head = newNode;
+            m_tail = newNode;
+        }
+        else {
+            m_tail->next = newNode;
+            m_tail = m_tail->next;
+        }
+        m_length++;
     }
-    m_length++;
-}   
-
 
     /*
      * front:
@@ -136,10 +186,6 @@ void pushBack(T element) {
         m_head = m_head->next;
         delete temp;
         m_length--;
-
-        if (m_head == nullptr) {
-            m_tail = nullptr; // Ensure m_tail is also null when the queue becomes empty
-        }
     }
 
     /*
@@ -175,9 +221,11 @@ void pushBack(T element) {
      * @return ConstIterator pointing to the end of the Queue (nullptr).
      */
     ConstIterator end() const {
-        return ConstIterator(nullptr);
-    }      
-
+        if (m_tail == nullptr) {
+            return ConstIterator(nullptr);
+        }
+        return ConstIterator(m_tail->next);
+    };
     class EmptyQueue {};
     class InvalidOperation{};
 
@@ -200,12 +248,10 @@ private:
     */
 
     void clear() {
-        while (m_head != nullptr) {
+        while(m_length > 0){
             popFront();
         }
-        m_tail = nullptr; // Explicitly setting m_tail to nullptr for clarity
     }
-
 
     struct Node {
         T data;
@@ -363,7 +409,7 @@ public:
     template <class Predicate, class T>
     Queue<T> filter(const Queue<T>& q, Predicate predicate) {
         Queue<T> filteredQueue;
-        for (typename Queue<T>::ConstIterator i = q.begin(); i != q.end(); ++i) {
+        for(typename Queue<T>::Iterator i = q.begin(); i!=q.end(); ++i){
             if (predicate(*i)) {
                 filteredQueue.pushBack(*i);
             }
@@ -383,10 +429,10 @@ public:
      * @return Reference to this Queue after transformation.
      */
     template <class Transformer, class T>
-    void transform(Queue<T>& q, Transformer transformer) {
-        for(typename Queue<T>::Iterator i = q.begin(); i != q.end(); ++i) {
-            *i = transformer(*i);
-        }
+    void transform(const Queue<T>& q, Transformer transformer) {
+            for(typename Queue<T>::Iterator i = q.begin(); i!=q.end(); ++i){
+                *i = transformer(*i);
+            }
     }
 
     /*
