@@ -139,19 +139,6 @@ HealthPoints operator+(const int health, const HealthPoints& healthPoints) {
     return newHealth;
 }
 
-HealthPoints operator-(const int health, const HealthPoints& healthPoints) {
-    HealthPoints newHealth = healthPoints;
-    newHealth.m_health -= health;
-    if (newHealth.m_health < newHealth.MINIMUM_MAX_HEALTH) {
-        newHealth.m_health = newHealth.MINIMUM_MAX_HEALTH;
-    }
-
-    if (newHealth.m_health > newHealth.m_maxHealth) {
-        newHealth.m_health = newHealth.m_maxHealth;
-    }
-    return newHealth;
-}
-
 
 
 bool operator==(const int health, const HealthPoints& healthPoints) {

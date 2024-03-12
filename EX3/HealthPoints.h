@@ -33,7 +33,6 @@ public:
     friend bool operator>(const int health1, const HealthPoints& health2);
     friend bool operator<(const int health1, const HealthPoints& health2);
     friend HealthPoints operator+(const int health1, const HealthPoints& health2);
-    friend HealthPoints operator-(const int health1, const HealthPoints& health2);
     friend bool operator==(const int health1, const HealthPoints& health2);
 
     // Exception class for invalid arguments
