@@ -15,6 +15,7 @@ public:
         m_length = 0;
     }
 
+
     /*
      * Destructor:
      * Cleans up resources used by the Queue.
