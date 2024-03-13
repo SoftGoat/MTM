@@ -44,12 +44,12 @@ Queue(const Queue& queue) {
     try {
         // Iterate through the original queue until the end is reached
         while (temp->next != nullptr) {
+            temp = temp->next;
             m_tail->next = new Node(temp->data);
             if (m_tail == nullptr) {
                 throw std::bad_alloc();
             }
             m_tail = m_tail->next;
-            temp = temp->next;
         }
     } catch (...) {
         // If an exception occurs during memory allocation, clean up allocated memory
@@ -106,7 +106,10 @@ Queue& operator=(const Queue& queue) {
      * @return Reference to this Queue after assignment.
      */
 void pushBack(T element) {
-    Node* newNode = new Node(element); // std::bad_alloc is thrown if memory allocation fails
+    Node* newNode = new Node(element); 
+    if(newNode == nullptr){
+        throw std::bad_alloc();
+    }   
     if (m_head == nullptr) {
         m_head = newNode;
         m_tail = newNode;
@@ -206,15 +209,15 @@ void pushBack(T element) {
     class EmptyQueue {};
     class InvalidOperation{};
 
-
-    void print () const {
+    // for testing purposes
+    /*void print () const {
         Node* temp = m_head;
             while (temp != nullptr) {
                 std::cout << temp->data << " ";
                 temp = temp->next;
     }       
         std::cout << std::endl;  
-   }
+   }*/
 private:
     /*  
     * clear:
@@ -388,10 +391,16 @@ public:
     template <class Predicate, class T>
     Queue<T> filter(const Queue<T>& q, Predicate predicate) {
         Queue<T> filteredQueue;
-        for (typename Queue<T>::ConstIterator i = q.begin(); i != q.end(); ++i) {
-            if (predicate(*i)) {
-                filteredQueue.pushBack(*i);
+        try{
+            for (typename Queue<T>::ConstIterator i = q.begin(); i != q.end(); ++i) {
+                if (predicate(*i)) {
+                    filteredQueue.pushBack(*i);
+                }
             }
+        }
+        catch(...){
+            // No need to delete filteredQueue here, it will be automatically destroyed
+            throw;
         }
         return filteredQueue;
     }
