@@ -8,6 +8,7 @@
 
 #include "Players/Player.h"
 #include "Cards/Card.h"
+#include "EncounterCard.h"
 
 using std::string;
 using std::shared_ptr;
@@ -46,11 +47,13 @@ private:
     */
     bool isGameOver() const;
 
-    void readCards(string deckPath);
+    void readCards(const string& deckPath);
 
     void readPlayers(const string& playersPath);
 
-    void addGangCard(std::ifstream *deckFile);
+    GangCard buildGangCard(std::ifstream &deckFile);
+
+    bool totalLost() const;
 
 public:
     /**

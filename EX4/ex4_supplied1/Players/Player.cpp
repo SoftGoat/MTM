@@ -23,7 +23,7 @@ string Player::getDescription() const {
 }
 
 string Player:: getName() const{
-    return "getname";
+    return m_name;
 }
 
 
