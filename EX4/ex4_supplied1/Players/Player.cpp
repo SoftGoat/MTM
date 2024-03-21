@@ -1,16 +1,29 @@
 #include <iostream>
 #include <cstring>
 #include "Player.h"
+#include "Sorcerer.h"  
+#include "Warrior.h"
+#include "Responsible.h"
+#include "RiskTaking.h"
+
+const std::string Player::DEFAULT_NAME = "ZoGi"; // Arbitrary
+const std::string Player::DEFAULT_JOB = "Warrior"; // Arbitrary
+const std::string Player::DEFAULT_BEHAVIOR = "RiskTaking"; // Arbitrary
+
+
 
 Player::Player(string name, int level, int force, int hp, int maxHp, int coins, const string job, const string behavior){
     string m_name= name;
-    inputValidation(name, level, force, hp, maxHp, coins, job, behavior);
+    inputValidation(name, level, force, hp, maxHp, coins);
+    m_job = createJob(job);
+    m_behavior = createBehavior(behavior);
     m_name = name;
     m_level = level;
     m_force = force;
     m_hp =hp;
     m_maxHp = maxHp;
     m_coins = coins;
+
 }
 
 Player::Player(string name, int maxHp, int force, const string job, const string behavior) {
@@ -18,7 +31,9 @@ Player::Player(string name, int maxHp, int force, const string job, const string
     int coins = DEFAULT_COINS;
     int level = DEFAULT_LEVEL;
     string m_name= name;
-    inputValidation(name, level, force, hp, maxHp, coins, job, behavior);
+    inputValidation(name, level, force, hp, maxHp, coins);
+    m_job = createJob(job);
+    m_behavior = createBehavior(behavior);
     m_name = name;
     m_level = level;
     m_force = force;
@@ -34,7 +49,9 @@ Player::Player(string name, int maxHp, const string job, const string behavior) 
     int level = DEFAULT_LEVEL;
     int force = DEFAULT_FORCE;
     string m_name= name;
-    inputValidation(name, level, force, hp, maxHp, coins, job, behavior);
+    inputValidation(name, level, force, hp, maxHp, coins);
+    m_job = createJob(job);
+    m_behavior = createBehavior(behavior);
     m_name = name;
     m_level = level;
     m_force = force;
@@ -50,7 +67,9 @@ Player::Player(string name, const string job, const string behavior) {
     int level = DEFAULT_LEVEL;
     int force = DEFAULT_FORCE;
     string m_name= name;
-    inputValidation(name, level, force, hp, maxHp, coins, job, behavior);
+    inputValidation(name, level, force, hp, maxHp, coins);
+    m_job = createJob(job);
+    m_behavior = createBehavior(behavior);
     m_name = name;
     m_level = level;
     m_force = force;
@@ -66,6 +85,8 @@ Player::Player(){
     int level = DEFAULT_LEVEL;
     int force = DEFAULT_FORCE;
     string m_name= DEFAULT_NAME;
+    m_job = createJob(DEFAULT_JOB);
+    m_behavior = createBehavior(DEFAULT_BEHAVIOR);
 
 }
 
@@ -76,6 +97,8 @@ Player::Player(const Player& other) {
     m_maxHp = other.m_maxHp;
     m_coins = other.m_coins;
     m_name = other.m_name;
+    m_job = other.m_job;
+    m_behavior = other.m_behavior;
 }
 
 
@@ -178,10 +201,11 @@ bool Player::pay(int transaction){
 
 
 int Player::getAttackStrength(){
-    return m_force+m_level;
+    return m_job->combatPower(*this);
 }
 
-bool Player::inputValidation(string name, int &level, int &force, int &hp, int &maxHp, int &coins, const string job, const string behavior)
+
+bool Player::inputValidation(string name, int &level, int &force, int &hp, int &maxHp, int &coins)
 {
     bool unchanged = true;
     if (level < MINIMUM_LEVEL || level > MAXIMUM_LEVEL)
@@ -222,7 +246,47 @@ bool Player::inputValidation(string name, int &level, int &force, int &hp, int &
         if (!isalpha(ch)) {
             unchanged = false;
             std::cout << "The value of 'name' is invalid, value changed to default setting:  " << DEFAULT_NAME << std::endl;
+            name = DEFAULT_NAME;
         }
     }
+
     return unchanged;
+}
+
+
+std::shared_ptr<Job> Player::createJob(const std::string& jobName) {
+    if (jobName == "Warrior") {
+        return std::make_shared<Warrior>();
+    } else if (jobName == "Sorcerer") {
+        return std::make_shared<Sorcerer>();
+    }
+    // Add more else-if blocks for additional jobs, need to be upadted manually
+
+    // Default job if no match found
+    std::cout << "Unknown job, defaulting to " << DEFAULT_JOB << std::endl;
+    if (DEFAULT_JOB == "Warrior") {
+        return std::make_shared<Warrior>();
+    } else if (DEFAULT_JOB == "Sorcerer") {
+        return std::make_shared<Sorcerer>();
+    }
+
+}
+
+std::shared_ptr<Behavior> Player::createBehavior(const std::string& behaviorName) {
+
+    if (behaviorName == "RiskTaking") {
+        return std::make_shared<RiskTaking>();
+    } else if (behaviorName == "Responsible") {
+        return std::make_shared<Responsible>();
+    }
+    // Add more else-if blocks for additional jobs, need to be upadted manually
+
+    // Default behavior if no match found
+    std::cout << "Unknown behavior, defaulting to " << DEFAULT_BEHAVIOR << std::endl;
+    if (DEFAULT_BEHAVIOR == "RiskTaking") {
+        return std::make_shared<RiskTaking>();
+    } else if (DEFAULT_BEHAVIOR == "Responsible") {
+        return std::make_shared<Responsible>();
+    }
+
 }

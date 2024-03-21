@@ -14,10 +14,9 @@ using std::string;
 class Job {
 
 public:
-    Job();
     virtual ~Job() = default;
-    virtual int combatPower(Player &Player) const;
-    virtual void event(Card& card);
+    virtual int combatPower(Player &Player) const = 0;
+    virtual void event(Card& card) const = 0;
 };
 
 

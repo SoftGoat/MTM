@@ -8,6 +8,10 @@
 
 class EventCard : public Card{
 
+    private:
+    string m_eventName;
+
+
 };
 
 class SolarEclipseCard: public EventCard{

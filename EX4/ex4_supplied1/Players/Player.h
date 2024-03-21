@@ -24,17 +24,20 @@ private:
     static const int MAX_NAME_LENGTH=16;
     static bool checkNameValidation(const string name);
 
-    constexpr static const char *DEFAULT_NAME = "ZoGi"; /**< The default name for a player */
+    static const string DEFAULT_NAME; /**< The default name for a player */
     static const int DEFAULT_LEVEL = 1; /**< The default level for a player */
     static const int DEFAULT_FORCE = 5; /**< The default force for a player */
     static const int DEFAULT_MAXHP = 100; /**< The default maximum hit points for a player */
     static const int DEFAULT_COINS = 10; /**< The default number of coins for a player */
+    static const string DEFAULT_JOB; /**< The default job for a player */
+    static const string DEFAULT_BEHAVIOR; /**< The default behavior for a player */
     static const int MAXIMUM_LEVEL = 10; /**< The maximum level a player can reach */
     static const int MINIMUM_LEVEL = 1; /**< The minimum level a player can have */
     static const int MINIMUM_FORCE = 0; /**< The minimum force a player can have */
     static const int MINIMUM_HP = 0; /**< The minimum hit points a player can have */
     static const int MINIMUM_COINS = 0; /**< The minimum number of coins a player can have */
     static const int MAXIMUM_HP = 100; /**< The maximum hit points a player can have */
+
 
     /**
      * @brief Validates the input values for the player attributes.
@@ -46,7 +49,24 @@ private:
      * @param coins The number of coins the player has.
      * @return True if the input values are valid, false otherwise.
      */
-    bool inputValidation(const string name, int &level, int &force, int &hp, int &maxHp, int &coins, const string job, const string behavior);
+    bool inputValidation(const string name, int &level, int &force, int &hp, int &maxHp, int &coins);
+
+    /**
+     * @brief Creates a job for the player.
+     * @param jobName The name of the job.
+     * @return A shared pointer to the created job.
+     */
+
+    std::shared_ptr<Job> createJob(const std::string& jobName);
+
+    /**
+     * @brief Creates a behavior for the player.
+     * @param behaviorName The name of the behavior.
+     * @return A shared pointer to the created behavior.
+     */
+
+    std::shared_ptr<Behavior> Player::createBehavior(const std::string& behaviorName);
+
 
     /**
      * @brief Prints the player's information.
