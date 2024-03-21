@@ -5,25 +5,33 @@
 #include "EventCard.h"
 #include <fstream>
 #include <iostream>
+#include <algorithm>
 
 using std::ifstream;
 using std::unique_ptr;
 
 Mtmchkin::Mtmchkin(const string& deckPath, const string& playersPath) {
-
-    /*===== TODO: Open and read cards file =====*/
     readCards(deckPath);
-    /*==========================================*/
-
-
-    /*===== TODO: Open and Read players file =====*/
     readPlayers(playersPath);
-
-    /*============================================*/
-
-
     this->m_turnIndex = 1;
 }
+
+bool biggerPlayer(const Player &player1, const Player &player2){
+    if(player1.getLevel()>player2.getLevel()){
+        return true;
+    }
+    if(player1.getLevel()<player2.getLevel()){
+        return false;
+    }
+    if(player1.getCoins()>player2.getCoins()){
+        return true;
+    }
+    if(player1.getCoins()<player2.getCoins()){
+        return false;
+    }
+    return player1.getName().compare(player2.getName())<0;
+}
+
 
 void Mtmchkin::playTurn(Player& player) {
 
@@ -34,6 +42,18 @@ void Mtmchkin::playTurn(Player& player) {
      * 3. Play the card
      * 4. Print the turn outcome with "printTurnOutcome"
     */
+    Card card=*m_cards.front();
+    printTurnDetails(m_turnIndex,player,card);
+    //todo play card
+    /**
+     * string outCome=card.play(player);
+     * printTurnOutCome(outCome);
+     */
+
+
+    //bringing the card to the back of the queue
+    m_cards.pop();
+    m_cards.push(&card);
 
     m_turnIndex++;
 }
@@ -41,38 +61,57 @@ void Mtmchkin::playTurn(Player& player) {
 void Mtmchkin::playRound() {
 
     printRoundStart();
-
-    /*===== TODO: Play a turn for each player =====*/
     for (Player player : m_players){
         playTurn(player);
     }
-
-    /*=============================================*/
-
     printRoundEnd();
+
 
     printLeaderBoardMessage();
     
-    /*===== TODO: Print leaderboard entry for each player using "printLeaderBoardEntry" =====*/
-
-    /*=======================================================================================*/
+    vector<Player> sortedPlayers=m_players;
+    std::sort(sortedPlayers.begin(),sortedPlayers.end(),biggerPlayer);
+    int i=1;
+    for(Player player : sortedPlayers){
+        printLeaderBoardEntry(i,player);
+        i++;
+    }
 
     printBarrier();
 }
 
 bool Mtmchkin::isGameOver() const {
-    /*===== TODO: Implement the game over condition =====*/
-    if(m_turnIndex>10)
-        return true;
-    return false; // Replace this line
-    /*===================================================*/
+    bool winFlag=false, lostFlag=true;
+    static const int MAX_LEVEL=10;//to remove this line
+    for (Player player : m_players) {
+        if(player.getLevel()==MAX_LEVEL){
+            winFlag= true;
+        }
+        if(player.getHealthPoints()>0){
+            lostFlag= false;
+        }
+    }
+    if(m_turnIndex>10)//remove this either
+            return true;
+    return winFlag||lostFlag;
 }
+
+bool Mtmchkin::totalLost() const {
+    for (Player player : m_players) {
+        if(player.getHealthPoints()>0){
+            return false;
+        }
+    }
+    return true;
+}
+
 
 void Mtmchkin::play() {
     printStartMessage();
-    /*===== TODO: Print start message entry for each player using "printStartPlayerEntry" =====*/
+    for(Player player:m_players){
+        printStartPlayerEntry(m_turnIndex,player);
+    }
 
-    /*=========================================================================================*/
     printBarrier();
 
     while (!isGameOver()) {
@@ -81,11 +120,16 @@ void Mtmchkin::play() {
 
     printGameOver();
     /*===== TODO: Print either a "winner" message or "no winner" message =====*/
-    
-    /*========================================================================*/
+    if(totalLost()){
+        printNoWinners();
+    }
+    else{
+        std::sort(m_players.begin(),m_players.end(),biggerPlayer);
+        printWinner(m_players.front());
+    }
 }
 
-void Mtmchkin::readCards(string deckPath) {
+void Mtmchkin::readCards(const string &deckPath) {
     ifstream deckFile(deckPath);
     if(!deckFile){
         throw std::exception();
@@ -94,12 +138,11 @@ void Mtmchkin::readCards(string deckPath) {
     while(deckFile>>cardType){
         if(cardType=="Goblin"||cardType=="Giant"||cardType=="Dragon"){
             EncounterCard *encounterCard= new EncounterCard(cardType);
-            encounterCard->addMonster(cardType);
             m_cards.push(encounterCard);
-            std::cout<<m_cards.front()->getDescription()<<"  ";
         } else {
             if (cardType=="Gang") {
-                addGangCard(&deckFile);
+                GangCard gangCard= buildGangCard(deckFile);
+                m_cards.push(&gangCard);
             } else {
                 if (cardType == "SolarEclipse") {
                     SolarEclipseCard *solarEclipseCard=new SolarEclipseCard();
@@ -144,21 +187,27 @@ void Mtmchkin:: readPlayers(const string& playersPath){
     }
 }
 
-void Mtmchkin::addGangCard(std::ifstream *deckFile) {
+
+GangCard Mtmchkin::buildGangCard(std::ifstream &deckFile) {
     int gangSize;
-    *deckFile>>gangSize;
+    deckFile>>gangSize;
     if(!gangSize){
         throw std::exception();
     }
-    string gangName= "Gang of "+std::to_string(gangSize)+" members";
-    EncounterCard *encounterCard= new EncounterCard(gangName);
+    GangCard gangCard(gangSize);
     for(int i=0; i<gangSize; i++) {
         string monster;
-        *deckFile>> monster;
-        encounterCard->addMonster(monster);
+        deckFile>> monster;
+        if(monster=="Goblin"||monster=="Giant"||monster=="Dragon") {
+            EncounterCard encounterCard(monster);
+            gangCard.addMonster(&encounterCard);
+        } else {
+            if(monster=="Gang"){
+                GangCard gangCard2=buildGangCard(deckFile);
+                gangCard.addMonster(&gangCard2);
+            }
+        }
     }
-    m_cards.push(encounterCard);
-
+    return gangCard;
 }
-
 

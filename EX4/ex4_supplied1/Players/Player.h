@@ -21,7 +21,7 @@ private:
     string m_name;
     shared_ptr<Job> m_job;
     shared_ptr<Behavior> m_behavior;
-    static const int MAX_NAME_LENGTH=16;
+    static const int MAX_NAME_LENGTH=15;
     static bool checkNameValidation(const string name);
 
     constexpr static const char *DEFAULT_NAME = "ZoGi"; /**< The default name for a player */
