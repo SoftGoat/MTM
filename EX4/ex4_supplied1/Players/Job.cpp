@@ -4,6 +4,6 @@
 
 #include "Job.h"
 
-Job::Job(string job) {
+Job::Job() {
 
 }

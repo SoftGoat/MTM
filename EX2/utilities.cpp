@@ -5,6 +5,7 @@
 
 #include "utilities.h"
 #include <iostream>
+#include <string>
 using std::cout;
 using std::endl;
 
@@ -58,7 +59,8 @@ void printTreasureCardInfo(const CardStats& card)
     cout << LINE_DIVIDER << endl;
 }
 
-void printPlayerInfo(const char* name, const int level, const int force, const int hp, const int coins)
+
+void printPlayerInfo(const std::string name, const int level, const int force, const int hp, const int coins)
 {
     cout << "Player Details:" << endl;
     cout << "Name: " << name << endl;
@@ -68,4 +70,5 @@ void printPlayerInfo(const char* name, const int level, const int force, const i
     cout << "Coins: " << coins << endl;
     cout << LINE_DIVIDER << endl;
 }
+
 
