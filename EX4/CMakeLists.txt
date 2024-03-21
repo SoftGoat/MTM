@@ -20,4 +20,8 @@ add_executable(ex4
         ex4_supplied1/Players/Behavior.cpp
         ex4_supplied1/Players/Behavior.h
         ex4_supplied1/Players/Job.cpp
-        ex4_supplied1/Players/Job.h)
+        ex4_supplied1/Players/Job.h
+        ex4_supplied1/Cards/EncounterCard.cpp
+        ex4_supplied1/Cards/EncounterCard.h
+        ex4_supplied1/Cards/EventCard.cpp
+        ex4_supplied1/Cards/EventCard.h)

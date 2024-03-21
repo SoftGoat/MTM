@@ -11,6 +11,7 @@
 
 using std::string;
 using std::shared_ptr;
+using std::unique_ptr;
 using std::vector;
 using std::queue;
 
@@ -18,8 +19,10 @@ class Mtmchkin{
 private:
     int m_turnIndex;
     vector<Player> m_players;
-    queue<Card> m_cards;
-    const int MAX_PLAYERS=6;
+    queue<Card*> m_cards;
+    static const int MAX_PLAYERS=6;
+    static const int MIN_PLAYERS=2;
+    static const int MIN_CARDS=5;
     /**
      * Playes a single turn for a player
      * 
@@ -43,9 +46,11 @@ private:
     */
     bool isGameOver() const;
 
-    bool readCards(string deckPath);
+    void readCards(string deckPath);
 
     void readPlayers(const string& playersPath);
+
+    void addGangCard(std::ifstream *deckFile);
 
 public:
     /**

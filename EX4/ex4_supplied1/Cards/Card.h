@@ -10,5 +10,5 @@ public:
      * 
      * @return - the description of the card
     */
-    string getDescription() const;
+    virtual string getDescription() const;
 };
