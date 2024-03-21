@@ -2,33 +2,131 @@
 #include <cstring>
 #include "Player.h"
 
-Player::Player(const string name,const string job,const string behavior) {
-    if(checkNameValidation(name)) {
-        m_name = name;
+Player::Player(string name, int level, int force, int hp, int maxHp, int coins, const string job, const string behavior){
+    string m_name= name;
+    inputValidation(name, level, force, hp, maxHp, coins, job, behavior);
+    m_name = name;
+    m_level = level;
+    m_force = force;
+    m_hp =hp;
+    m_maxHp = maxHp;
+    m_coins = coins;
+}
+
+Player::Player(string name, int maxHp, int force, const string job, const string behavior) {
+    int hp = maxHp;
+    int coins = DEFAULT_COINS;
+    int level = DEFAULT_LEVEL;
+    string m_name= name;
+    inputValidation(name, level, force, hp, maxHp, coins, job, behavior);
+    m_name = name;
+    m_level = level;
+    m_force = force;
+    m_hp = hp;
+    m_maxHp = maxHp;
+    m_coins = coins;
+}
+
+Player::Player(string name, int maxHp, const string job, const string behavior) {
+
+    int hp = maxHp;
+    int coins = DEFAULT_COINS;
+    int level = DEFAULT_LEVEL;
+    int force = DEFAULT_FORCE;
+    string m_name= name;
+    inputValidation(name, level, force, hp, maxHp, coins, job, behavior);
+    m_name = name;
+    m_level = level;
+    m_force = force;
+    m_hp = hp;
+    m_maxHp = maxHp;
+    m_coins = coins;
+}
+
+Player::Player(string name, const string job, const string behavior) {
+    int maxHp = DEFAULT_MAXHP;
+    int hp = maxHp;
+    int coins = DEFAULT_COINS;
+    int level = DEFAULT_LEVEL;
+    int force = DEFAULT_FORCE;
+    string m_name= name;
+    inputValidation(name, level, force, hp, maxHp, coins, job, behavior);
+    m_name = name;
+    m_level = level;
+    m_force = force;
+    m_hp = hp;
+    m_maxHp = maxHp;
+    m_coins = coins;
+}
+
+Player::Player(){
+    int maxHp = DEFAULT_MAXHP;
+    int hp = maxHp;
+    int coins = DEFAULT_COINS;
+    int level = DEFAULT_LEVEL;
+    int force = DEFAULT_FORCE;
+    string m_name= DEFAULT_NAME;
+
+}
+
+Player::Player(const Player& other) {
+    m_level = other.m_level;
+    m_force = other.m_force;
+    m_hp = other.m_hp;
+    m_maxHp = other.m_maxHp;
+    m_coins = other.m_coins;
+    m_name = other.m_name;
+}
+
+
+Player::~Player()
+{
+}
+
+
+Player& Player::operator=(const Player& other) {
+    m_level = other.m_level;
+    m_force = other.m_force;
+    m_hp = other.m_hp;
+    m_maxHp = other.m_maxHp;
+    m_coins = other.m_coins;
+    m_name = other.m_name;
+    return *this;
+}
+
+bool Player::operator<(const Player& other) const {
+    if(m_level < other.m_level){
+        return true;
     }
-    else{
-        throw std:: exception();
+    else if(m_level == other.m_level){
+        if(m_coins < other.m_coins){
+            return true;
+        }
+        else if(m_coins == other.m_coins){
+            if(m_name < other.m_name){
+                return true;
+            }
+            else{
+                return false;
+                }
+            }
+        }
+    return false;
     }
-    //todo enum job, building the right sub class. check if wrong, throw
-    m_job = std::make_shared<Job> (job);
-    //todo enum behavior, building the right sub class. check if wrong, throw
-    m_behavior = std::make_shared<Behavior>(behavior);
 
+
+
+
+void Player::levelUp() {
+    if (m_level < MAXIMUM_LEVEL) {
+        m_level++;
+    } else {
+        std::cout << "Player already reached max level: " << std::endl;
+    }
 }
 
-
-
-string Player::getDescription() const {
-    return "getdis";
-}
-
-string Player:: getName() const{
-    return "getname";
-}
-
-
-int Player:: getLevel() const{
-    return 1;
+int Player::getLevel() {
+    return m_level;
 }
 
 void Player::buff(int attack) {
