@@ -106,6 +106,13 @@ Player::~Player()
 {
 }
 
+string Player::getJobName() const {
+    return m_job->getJobName();
+}
+
+string Player::getBehaviorName() const {
+    return m_behavior->getBehaviorName();
+}
 
 Player& Player::operator=(const Player& other) {
     m_level = other.m_level;
@@ -159,12 +166,37 @@ void Player::buff(int attack) {
     
 }
 
-void Player::heal(int potion) {
-    if(potion > 0){
-        int temp = m_hp + potion;
-        m_hp = temp > m_maxHp ? m_maxHp : temp;
+void Player::nerf(int attack) {
+    if(attack>0){
+    m_force -= attack;
     }
+    
 }
+
+int Player::getForce()const {
+    return m_force;
+}
+
+int Player::getHealthPoints() const {
+    return m_hp;
+}
+
+int Player::getMaxHealthPoints() const {
+    return m_maxHp;
+}
+
+int Player::getCoins() const {
+    return m_coins;
+}
+
+string Player::getName() const {
+    return m_name;
+}
+
+std::shared_ptr<Behavior> Player::getBehavior() const {
+    return m_behavior;
+}
+
 
 void Player::damage(int attack){
     if(attack > 0){

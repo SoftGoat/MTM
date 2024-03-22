@@ -1,5 +1,4 @@
-#ifndef PLAYER_H
-#define PLAYER_H
+#pragma once
 
 #include <iostream>
 #include <cstring>
@@ -11,14 +10,13 @@ using std::shared_ptr;
 
 class Player {
 private:
-    char* m_name; /**< The name of the player */
+    string m_name;; /**< The name of the player */
     int m_level; /**< The level of the player */
     int m_force; /**< The force of the player */
     int m_hp; /**< The current hit points of the player */
 
     int m_maxHp; /**< The maximum hit points of the player */
     int m_coins; /**< The number of coins the player has */
-    string m_name;
     shared_ptr<Job> m_job;
     shared_ptr<Behavior> m_behavior;
     static const int MAX_NAME_LENGTH=16;
@@ -166,10 +164,29 @@ public:
     int getLevel();
 
     /**
+     * @brief Get the job of the player.
+     * @return The job name of the player.
+     */
+
+    string getJobName() const;
+
+    /**
+     * @brief Get the behavior of the player.
+     * @return The behavior name of the player.
+     */
+
+    string getBehaviorName() const;
+
+    /**
      * @brief Increases the player's force.
      * @param attack The amount of force to increase.
      */
     void buff(int attack);
+    /**
+     * @brief Decrease the player's force.
+     * @param attack The amount of force to increase.
+     */
+    void nerf(int attack);
 
     /**
      * @brief Increases the player's hit points by a given amount, up to the maximum hit points.
@@ -243,11 +260,28 @@ public:
     int getHealthPoints() const;
 
     /**
+     * Gets the maximum amount of health points the player can have
+     * 
+     * @return - maximum health points of the player
+    */
+
+    int getMaxHealthPoints() const;
+
+    /**
      * Gets the amount of coins the player has
      * 
      * @return - coins of the player
     */
     int getCoins() const;
+    /*
+    * Gets the job of the player
+    * @return - job of the player
+    */
+    shared_ptr<Job> getJob() const;
+    /*
+    * Gets the behavior of the player
+    * @return - behavior of the player
+    */
+    std::shared_ptr<Behavior> getBehavior() const;
 };
 
-#endif // PLAYER_H

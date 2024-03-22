@@ -1,6 +1,4 @@
-
 #pragma once
-
 #include "../Players/Player.h"
 
 class Card {
@@ -12,7 +10,7 @@ public:
      * 
      * @return - the description of the card
     */
-    string getDescription() const;
+    virtual string getDescription() const = 0;
 
-    void playCard(Player &player) const;
+    virtual void playCard(Player &player) const =0;
 };

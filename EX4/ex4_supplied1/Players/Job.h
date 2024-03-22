@@ -1,10 +1,4 @@
-//
-// Created by gilad on 17 מרץ 2024.
-//
-
-#ifndef EX4_JOB_H
-#define EX4_JOB_H
-
+#pragma once
 #include <string>
 #include "../Cards/Card.h"
 #include "Player.h" 
@@ -16,8 +10,16 @@ class Job {
 public:
     virtual ~Job() = default;
     virtual int combatPower(Player &Player) const = 0;
-    virtual void event(Card& card) const = 0;
+    virtual string getJobName() const = 0;
+    virtual JobType getJobType() const = 0;
 };
 
 
-#endif //EX4_JOB_H
+enum class JobType {
+    Warrior,
+    Sorcerer,
+    // Add other job types as needed
+};
+
+
+
