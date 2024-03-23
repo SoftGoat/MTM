@@ -1,15 +1,12 @@
 
 #include "Mtmchkin.h"
 #include "utilities.h"
-#include "EncounterCard.h"
-#include "EventCard.h"
 #include <fstream>
 #include <iostream>
 #include <algorithm>
 
 using std::ifstream;
 using std::unique_ptr;
-
 Mtmchkin::Mtmchkin(const string& deckPath, const string& playersPath) {
     readCards(deckPath);
     readPlayers(playersPath);
@@ -42,18 +39,18 @@ void Mtmchkin::playTurn(Player& player) {
      * 3. Play the card
      * 4. Print the turn outcome with "printTurnOutcome"
     */
-    Card card=*m_cards.front();
-    printTurnDetails(m_turnIndex,player,card);
+    std::shared_ptr<Card> card = m_cards.front();
+    printTurnDetails(m_turnIndex, player, *card);
     //todo play card
     /**
-     * string outCome=card.play(player);
+     * string outCome=card->play(player);
      * printTurnOutCome(outCome);
      */
 
 
     //bringing the card to the back of the queue
     m_cards.pop();
-    m_cards.push(&card);
+    m_cards.push(card);
 
     m_turnIndex++;
 }
@@ -136,28 +133,7 @@ void Mtmchkin::readCards(const string &deckPath) {
     }
     string cardType;
     while(deckFile>>cardType){
-        if(cardType=="Goblin"||cardType=="Giant"||cardType=="Dragon"){
-            EncounterCard *encounterCard= new EncounterCard(cardType);
-            m_cards.push(encounterCard);
-        } else {
-            if (cardType=="Gang") {
-                GangCard gangCard= buildGangCard(deckFile);
-                m_cards.push(&gangCard);
-            } else {
-                if (cardType == "SolarEclipse") {
-                    SolarEclipseCard *solarEclipseCard=new SolarEclipseCard();
-                    m_cards.push(solarEclipseCard);
-                } else {
-                    if (cardType == "PotionsMerchant") {
-                        PotionsMerchantCard *potionsMerchantCard=new PotionsMerchantCard();
-                        m_cards.push(potionsMerchantCard);
-                    } else {
-                        throw std::exception();
-                    }
-                }
-
-            }
-        }
+        m_cards.push(CardFactory::createCard(cardType,deckFile));
     }
     if (m_cards.size()<MIN_CARDS){
         throw std::exception();
@@ -188,26 +164,6 @@ void Mtmchkin:: readPlayers(const string& playersPath){
 }
 
 
-GangCard Mtmchkin::buildGangCard(std::ifstream &deckFile) {
-    int gangSize;
-    deckFile>>gangSize;
-    if(!gangSize){
-        throw std::exception();
-    }
-    GangCard gangCard(gangSize);
-    for(int i=0; i<gangSize; i++) {
-        string monster;
-        deckFile>> monster;
-        if(monster=="Goblin"||monster=="Giant"||monster=="Dragon") {
-            EncounterCard encounterCard(monster);
-            gangCard.addMonster(&encounterCard);
-        } else {
-            if(monster=="Gang"){
-                GangCard gangCard2=buildGangCard(deckFile);
-                gangCard.addMonster(&gangCard2);
-            }
-        }
-    }
-    return gangCard;
-}
+
+
 

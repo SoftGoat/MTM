@@ -1,12 +1,13 @@
 #pragma once
 #include "../Players/Job.h"
-
+#include "../Players/Player.h"
+#include "../Players/Behavior.h"
 class PotionsMerchant : public Card{
     private:
         const int POTIONS_PRICE = 5;
         const int POTIONS_HEAL = 10;
 public:
-    PotionsMerchant();
+    PotionsMerchant() = default;
     string getDescription() const;
     void playCard(Player &player) const;
 };

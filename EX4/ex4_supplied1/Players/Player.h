@@ -4,21 +4,33 @@
 #include <cstring>
 #include <string>
 #include <memory>
-#include "Job.h"
-#include "Behavior.h"
+#include "Sorcerer.h"  
+#include "Warrior.h"
+#include "Responsible.h"
+#include "RiskTaking.h"
 using std::shared_ptr;
+using std::string;
+// Forward declarations
+class Warrior;
+class Sorcerer;
+class Responsible;
+class RiskTaking;
+class Job; 
+class Behavior; 
+
+
 
 class Player {
 private:
-    string m_name;; /**< The name of the player */
+    string m_name; /**< The name of the player */
     int m_level; /**< The level of the player */
     int m_force; /**< The force of the player */
     int m_hp; /**< The current hit points of the player */
 
     int m_maxHp; /**< The maximum hit points of the player */
     int m_coins; /**< The number of coins the player has */
-    shared_ptr<Job> m_job;
-    shared_ptr<Behavior> m_behavior;
+    shared_ptr<Job> m_job; /**< The job of the player */
+    shared_ptr<Behavior> m_behavior; /**< The behavior of the player */
     static const int MAX_NAME_LENGTH=16;
     static bool checkNameValidation(const string name);
 
@@ -27,8 +39,8 @@ private:
     static const int DEFAULT_FORCE = 5; /**< The default force for a player */
     static const int DEFAULT_MAXHP = 100; /**< The default maximum hit points for a player */
     static const int DEFAULT_COINS = 10; /**< The default number of coins for a player */
-    static const string DEFAULT_JOB; /**< The default job for a player */
-    static const string DEFAULT_BEHAVIOR; /**< The default behavior for a player */
+    static const shared_ptr<Job> DEFAULT_JOB; /**< The default job for a player */
+    static const shared_ptr<Behavior> DEFAULT_BEHAVIOR; /**< The default behavior for a player */
     static const int MAXIMUM_LEVEL = 10; /**< The maximum level a player can reach */
     static const int MINIMUM_LEVEL = 1; /**< The minimum level a player can have */
     static const int MINIMUM_FORCE = 0; /**< The minimum force a player can have */
@@ -63,7 +75,7 @@ private:
      * @return A shared pointer to the created behavior.
      */
 
-    std::shared_ptr<Behavior> Player::createBehavior(const std::string& behaviorName);
+    std::shared_ptr<Behavior> createBehavior(const std::string& behaviorName);
 
 
     /**
@@ -161,7 +173,7 @@ public:
      * @brief Gets the level of the player.
      * @return The level of the player.
      */
-    int getLevel();
+    int getLevel() const;
 
     /**
      * @brief Get the job of the player.
@@ -239,13 +251,6 @@ public:
     std::string getName() const;
 
     /**
-     * Gets the current level of the player
-        * 
-        * @return - level of the player
-    */
-    int getLevel() const;
-
-    /**
      * Gets the of force the player has
      * 
      * @return - force points of the player
@@ -282,6 +287,6 @@ public:
     * Gets the behavior of the player
     * @return - behavior of the player
     */
-    std::shared_ptr<Behavior> getBehavior() const;
+    shared_ptr<Behavior> getBehavior() const;
 };
 

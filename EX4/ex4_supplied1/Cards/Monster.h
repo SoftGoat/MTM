@@ -3,6 +3,15 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include "../Players/Player.h" // Include header for Player class
+
+enum class MonsterType {
+    GOBLIN,
+    DRAGON,
+    GIANT,
+    GANG,
+    OTHER
+};
 
 class Monster : public Card { // Monster class inherits from Card class
 
@@ -12,6 +21,7 @@ private:
     int m_loot; // Loot dropped by the monster
     std::string m_name; // Name of the monster
     std::vector<std::string> members; // Vector to store members of a gang
+    MonsterType m_monsterType; // Type of the monster
 
     // Constants defining default values for various types of monsters
     const int GOBLIN_DAMAGE = 10;
@@ -28,7 +38,11 @@ private:
     const std::string GIANT_NAME = "Giant";
     const std::string GANG_NAME = "Gang";
 
+
+
 public:
+
+ 
     /**
      * Default constructor for a Goblin monster.
      * Initializes the monster with default values for a Goblin.
@@ -55,6 +69,13 @@ public:
      */
     ~Monster();
 
+        /**
+     * Get the type of a monster based on its name.
+     * @param name - The name of the monster.
+     * @return - The type of the monster.
+     */
+    MonsterType getType(std::string name) const;
+
     /**
      * Get a description of the monster.
      * @return - A string describing the monster.
@@ -78,4 +99,11 @@ public:
      * @param monster - The monster to add to the gang.
      */
     void addMonster(Monster monster);
+    /*
+    * Get the monster type.
+    * @return - The type of the monster.  
+    */
+    MonsterType getMonsterType() const;
+
 };
+

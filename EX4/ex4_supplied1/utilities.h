@@ -3,7 +3,7 @@
 
 #include "Players/Player.h"
 #include "Cards/Card.h"
-
+using std::string;
 /**
  * Prints the start message of the game
  * 

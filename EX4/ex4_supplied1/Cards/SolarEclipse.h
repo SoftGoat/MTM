@@ -1,5 +1,5 @@
 #pragma once
-#include "../Players/Job.h"
+#include "../Players/Player.h"
 
 class SolarEclipse : public Card{
 private:
@@ -8,6 +8,7 @@ private:
     
 public:
     SolarEclipse() = default;
+    ~SolarEclipse() = default;
     string getDescription() const;
     void playCard(Player &player) const;
 };

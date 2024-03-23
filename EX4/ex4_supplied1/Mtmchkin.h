@@ -1,6 +1,4 @@
-
 #pragma once
-
 #include <string>
 #include <memory>
 #include <vector>
@@ -8,7 +6,9 @@
 
 #include "Players/Player.h"
 #include "Cards/Card.h"
-#include "EncounterCard.h"
+#include "Cards/Monster.h"
+#include "./Cards/CardFactory.h"
+
 
 using std::string;
 using std::shared_ptr;
@@ -20,7 +20,7 @@ class Mtmchkin{
 private:
     int m_turnIndex;
     vector<Player> m_players;
-    queue<Card*> m_cards;
+    std::queue<std::shared_ptr<Card>> m_cards;
     static const int MAX_PLAYERS=6;
     static const int MIN_PLAYERS=2;
     static const int MIN_CARDS=5;
@@ -51,7 +51,7 @@ private:
 
     void readPlayers(const string& playersPath);
 
-    GangCard buildGangCard(std::ifstream &deckFile);
+    Monster buildGangCard(std::ifstream &deckFile);
 
     bool totalLost() const;
 

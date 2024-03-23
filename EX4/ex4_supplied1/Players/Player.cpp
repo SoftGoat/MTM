@@ -1,104 +1,75 @@
-#include <iostream>
-#include <cstring>
 #include "Player.h"
-#include "Sorcerer.h"  
-#include "Warrior.h"
-#include "Responsible.h"
-#include "RiskTaking.h"
+
 
 const std::string Player::DEFAULT_NAME = "ZoGi"; // Arbitrary
-const std::string Player::DEFAULT_JOB = "Warrior"; // Arbitrary
-const std::string Player::DEFAULT_BEHAVIOR = "RiskTaking"; // Arbitrary
+const std::shared_ptr<Job> Player::DEFAULT_JOB = Warrior::getInstance(); // Arbitrary
+const std::shared_ptr<Behavior> Player::DEFAULT_BEHAVIOR = Responsible::getInstance(); // Arbitrary
 
 
 
 Player::Player(string name, int level, int force, int hp, int maxHp, int coins, const string job, const string behavior){
-    string m_name= name;
+    this->m_name= name;
     inputValidation(name, level, force, hp, maxHp, coins);
-    m_job = createJob(job);
-    m_behavior = createBehavior(behavior);
-    m_name = name;
-    m_level = level;
-    m_force = force;
-    m_hp =hp;
-    m_maxHp = maxHp;
-    m_coins = coins;
+    this->m_job = createJob(job);
+    this->m_behavior = createBehavior(behavior);
 
 }
 
 Player::Player(string name, int maxHp, int force, const string job, const string behavior) {
-    int hp = maxHp;
-    int coins = DEFAULT_COINS;
-    int level = DEFAULT_LEVEL;
-    string m_name= name;
-    inputValidation(name, level, force, hp, maxHp, coins);
-    m_job = createJob(job);
-    m_behavior = createBehavior(behavior);
-    m_name = name;
-    m_level = level;
-    m_force = force;
-    m_hp = hp;
-    m_maxHp = maxHp;
-    m_coins = coins;
+    this->m_hp = maxHp;
+    this->m_coins = DEFAULT_COINS;
+    this->m_level = DEFAULT_LEVEL;
+    this->m_name= name;
+    this->m_maxHp = maxHp;
+    inputValidation(m_name, m_level, m_force, m_hp, m_maxHp, m_coins);
+    this->m_job = createJob(job);
+    this->m_behavior = createBehavior(behavior);
 }
 
 Player::Player(string name, int maxHp, const string job, const string behavior) {
-
-    int hp = maxHp;
-    int coins = DEFAULT_COINS;
-    int level = DEFAULT_LEVEL;
-    int force = DEFAULT_FORCE;
+    this->m_hp = maxHp;
+    this->m_maxHp = maxHp;
+    this->m_coins = DEFAULT_COINS;
+    this->m_level = DEFAULT_LEVEL;
+    this->m_force = DEFAULT_FORCE;
     string m_name= name;
-    inputValidation(name, level, force, hp, maxHp, coins);
-    m_job = createJob(job);
-    m_behavior = createBehavior(behavior);
-    m_name = name;
-    m_level = level;
-    m_force = force;
-    m_hp = hp;
-    m_maxHp = maxHp;
-    m_coins = coins;
+    inputValidation(m_name, m_level, m_force, m_hp, m_maxHp, m_coins);
+    this->m_job = createJob(job);
+    this->m_behavior = createBehavior(behavior);
 }
 
 Player::Player(string name, const string job, const string behavior) {
-    int maxHp = DEFAULT_MAXHP;
-    int hp = maxHp;
-    int coins = DEFAULT_COINS;
-    int level = DEFAULT_LEVEL;
-    int force = DEFAULT_FORCE;
-    string m_name= name;
-    inputValidation(name, level, force, hp, maxHp, coins);
-    m_job = createJob(job);
-    m_behavior = createBehavior(behavior);
-    m_name = name;
-    m_level = level;
-    m_force = force;
-    m_hp = hp;
-    m_maxHp = maxHp;
-    m_coins = coins;
+    this->m_maxHp = DEFAULT_MAXHP;
+    this->m_hp = m_maxHp;
+    this->m_coins = DEFAULT_COINS;
+    this->m_level = DEFAULT_LEVEL;
+    this->m_force = DEFAULT_FORCE;
+    this->m_name= name;
+    inputValidation(m_name, m_level, m_force, m_hp, m_maxHp, m_coins);
+    this->m_job = createJob(job);
+    this->m_behavior = createBehavior(behavior);
 }
 
 Player::Player(){
-    int maxHp = DEFAULT_MAXHP;
-    int hp = maxHp;
-    int coins = DEFAULT_COINS;
-    int level = DEFAULT_LEVEL;
-    int force = DEFAULT_FORCE;
-    string m_name= DEFAULT_NAME;
-    m_job = createJob(DEFAULT_JOB);
-    m_behavior = createBehavior(DEFAULT_BEHAVIOR);
-
+    this->m_maxHp = DEFAULT_MAXHP;
+    this->m_hp = m_maxHp;
+    this->m_coins = DEFAULT_COINS;
+    this->m_level = DEFAULT_LEVEL;
+    this->m_force = DEFAULT_FORCE;
+    this->m_name= DEFAULT_NAME;
+    this->m_job = DEFAULT_JOB;
+    this->m_behavior = DEFAULT_BEHAVIOR;
 }
 
 Player::Player(const Player& other) {
-    m_level = other.m_level;
-    m_force = other.m_force;
-    m_hp = other.m_hp;
-    m_maxHp = other.m_maxHp;
-    m_coins = other.m_coins;
-    m_name = other.m_name;
-    m_job = other.m_job;
-    m_behavior = other.m_behavior;
+    this->m_level = other.m_level;
+    this->m_force = other.m_force;
+    this->m_hp = other.m_hp;
+    this->m_maxHp = other.m_maxHp;
+    this->m_coins = other.m_coins;
+    this->m_name = other.m_name;
+    this->m_job = other.m_job;
+    this->m_behavior = other.m_behavior;
 }
 
 
@@ -115,12 +86,12 @@ string Player::getBehaviorName() const {
 }
 
 Player& Player::operator=(const Player& other) {
-    m_level = other.m_level;
-    m_force = other.m_force;
-    m_hp = other.m_hp;
-    m_maxHp = other.m_maxHp;
-    m_coins = other.m_coins;
-    m_name = other.m_name;
+    this->m_level = other.m_level;
+    this->m_force = other.m_force;
+    this->m_hp = other.m_hp;
+    this->m_maxHp = other.m_maxHp;
+    this->m_coins = other.m_coins;
+    this->m_name = other.m_name;
     return *this;
 }
 
@@ -145,9 +116,14 @@ bool Player::operator<(const Player& other) const {
     }
 
 
+void Player::heal(int potion) {
+    if(potion > 0){
+        int temp = m_hp + potion;
+        m_hp = temp > m_maxHp ? m_maxHp : temp;
+    }
+}
 
-
-void Player::levelUp() {
+void Player::levelUp(){
     if (m_level < MAXIMUM_LEVEL) {
         m_level++;
     } else {
@@ -155,9 +131,11 @@ void Player::levelUp() {
     }
 }
 
-int Player::getLevel() {
+int Player::getLevel() const{
     return m_level;
 }
+
+
 
 void Player::buff(int attack) {
     if(attack>0){
@@ -197,6 +175,9 @@ std::shared_ptr<Behavior> Player::getBehavior() const {
     return m_behavior;
 }
 
+shared_ptr<Job> Player::getJob() const {
+    return m_job;
+}
 
 void Player::damage(int attack){
     if(attack > 0){
@@ -288,37 +269,35 @@ bool Player::inputValidation(string name, int &level, int &force, int &hp, int &
 
 std::shared_ptr<Job> Player::createJob(const std::string& jobName) {
     if (jobName == "Warrior") {
-        return std::make_shared<Warrior>();
+        return Warrior::getInstance();
     } else if (jobName == "Sorcerer") {
-        return std::make_shared<Sorcerer>();
+        return Sorcerer::getInstance();
     }
     // Add more else-if blocks for additional jobs, need to be upadted manually
 
     // Default job if no match found
-    std::cout << "Unknown job, defaulting to " << DEFAULT_JOB << std::endl;
-    if (DEFAULT_JOB == "Warrior") {
-        return std::make_shared<Warrior>();
-    } else if (DEFAULT_JOB == "Sorcerer") {
-        return std::make_shared<Sorcerer>();
-    }
-
+    std::cout << "Unknown job, creating default job.\n";
+    return DEFAULT_JOB; 
 }
 
 std::shared_ptr<Behavior> Player::createBehavior(const std::string& behaviorName) {
 
     if (behaviorName == "RiskTaking") {
-        return std::make_shared<RiskTaking>();
+        return RiskTaking::getInstance();
     } else if (behaviorName == "Responsible") {
-        return std::make_shared<Responsible>();
+        return Responsible::getInstance();
     }
     // Add more else-if blocks for additional jobs, need to be upadted manually
 
     // Default behavior if no match found
-    std::cout << "Unknown behavior, defaulting to " << DEFAULT_BEHAVIOR << std::endl;
-    if (DEFAULT_BEHAVIOR == "RiskTaking") {
-        return std::make_shared<RiskTaking>();
-    } else if (DEFAULT_BEHAVIOR == "Responsible") {
-        return std::make_shared<Responsible>();
-    }
-
+    std::cout << "Unknown behavior, creating default behavior.\n";
+    return DEFAULT_BEHAVIOR; 
 }
+
+string Player::getDescription() const {
+    return "Player " + m_name + " is a level " + std::to_string(m_level) + " " + m_job->getJobName() + " with " + std::to_string(m_hp) + " hit points and " + std::to_string(m_coins) + " coins.";
+}
+
+
+
+
