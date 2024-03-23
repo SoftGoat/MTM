@@ -10,7 +10,7 @@ std::shared_ptr<Sorcerer> Sorcerer::getInstance() {
 }
 
 int Sorcerer::combatPower(Player& player) const {
-    return player.getLevel() + player.getForce(); // Adjust according to Sorcerer's logic
+    return player.getLevel() + player.getForce(); // calculate the combat power
 }
 
 string Sorcerer::getJobName() const {

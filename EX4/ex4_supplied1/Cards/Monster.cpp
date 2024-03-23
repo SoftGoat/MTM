@@ -53,7 +53,7 @@ void Monster::addMonster(string name){
         m_damage = GOBLIN_DAMAGE;
         m_combatPower = GOBLIN_COMBAT_POWER;
         m_loot = GOBLIN_LOOT;
-        m_name +=","+GOBLIN_NAME;
+        m_name +=GOBLIN_NAME;
         members.push_back(GOBLIN_NAME);
     }
     else
@@ -61,14 +61,14 @@ void Monster::addMonster(string name){
         m_damage += GOBLIN_DAMAGE;
         m_combatPower += GOBLIN_COMBAT_POWER;
         m_loot += GOBLIN_LOOT;
-        m_name +=","+GOBLIN_NAME;
+        m_name +=GOBLIN_NAME;
         members.push_back(name);
     }
     else if(type == MonsterType::DRAGON){
         m_damage += DRAGON_DAMAGE;
         m_combatPower += DRAGON_COMBAT_POWER;
         m_loot += DRAGON_LOOT;
-        m_name +=","+DRAGON_NAME;
+        m_name +=DRAGON_NAME;
         members.push_back(name);
     }
 
@@ -76,14 +76,14 @@ void Monster::addMonster(string name){
         m_damage += GIANT_DAMAGE;
         m_combatPower += GIANT_COMBAT_POWER;
         m_loot += GIANT_LOOT;
-        m_name +=","+GIANT_NAME;
+        m_name +=GIANT_NAME;
         members.push_back(name);
     }
     else if(type == MonsterType::GANG){
         m_damage += 0;
         m_combatPower += 0;
         m_loot += 0;
-        m_name +=","+GANG_NAME;
+        m_name +=GANG_NAME;
     }
 
     else{
@@ -126,7 +126,7 @@ MonsterType Monster::getType(std::string name)const{
 
 
 string Monster::getDescription()const{
-    return "Monsters: " + m_name + " Combat Power: " + std::to_string(m_combatPower) + " Loot: " + std::to_string(m_loot) + " Damage: " + std::to_string(m_damage);
+    return "Monster: " + m_name + " (power " + std::to_string(m_combatPower) + ", loot " + std::to_string(m_loot) + ", damage " + std::to_string(m_damage)+")";
 }
 
 

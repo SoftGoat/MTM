@@ -17,13 +17,13 @@ std::shared_ptr<Card> CardFactory::createCard(const std::string& cardName) {
 
 
 std::shared_ptr<Card> CardFactory::createCard(const std::string& cardName, std::ifstream &deckFile) {
-    if (cardName == "Goblin" || cardName == "Gang" || cardName == "Dragon" || cardName == "Giant") {
+    if (cardName == "Goblin" || cardName == "Dragon" || cardName == "Giant") {
         return std::make_shared<Monster>(cardName);
     } else if (cardName == "Gang") {
         return buildGangCard(deckFile);
-    } else if (cardName == "Potions Merchant") {
+    } else if (cardName == "PotionsMerchant") {
         return std::make_shared<PotionsMerchant>();
-    } else if (cardName == "Solar Eclipse") {
+    } else if (cardName == "SolarEclipse") {
         return std::make_shared<SolarEclipse>();
     }
     throw std::invalid_argument("Unknown card name");

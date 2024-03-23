@@ -9,10 +9,26 @@ private:
     Warrior() = default; // Make constructor private to ensure singleton
     static std::shared_ptr<Warrior> shared_instance;
 public:
-    int combatPower(Player& player) const override;
-    string getJobName() const override;
-    JobType getJobType() const override;
+    /**
+     * Destructor
+    */
     ~Warrior() = default;
+    /**
+     * @param player the player to calculate the combat power
+     * @return shared pointer to the instance of the class
+    */
+    int combatPower(Player& player) const override;
+    /**
+     * @return the name of the job
+    */
+    string getJobName() const override;
+    /**
+     * @return the type of the job
+    */
+    JobType getJobType() const override;
+    /**
+     * @return shared pointer to the instance of the class
+    */
     static std::shared_ptr<Warrior> getInstance();
 };
 

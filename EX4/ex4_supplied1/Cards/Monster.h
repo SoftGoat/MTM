@@ -72,7 +72,7 @@ public:
         /**
      * Get the type of a monster based on its name.
      * @param name - The name of the monster.
-     * @return - The type of the monster.
+     * @return MonsterType - The type of the monster.
      */
     MonsterType getType(std::string name) const;
 
@@ -91,17 +91,19 @@ public:
     /**
      * Add a member to a gang.
      * @param name - The name of the member to add.
+     * @return void
      */
     void addMonster(std::string name);
 
     /**
      * Add a monster to a gang.
      * @param monster - The monster to add to the gang.
+     * @return void
      */
     void addMonster(Monster monster);
-    /*
+    /**
     * Get the monster type.
-    * @return - The type of the monster.  
+    * @return - The type of the monster. 
     */
     MonsterType getMonsterType() const;
 

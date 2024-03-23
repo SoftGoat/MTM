@@ -41,11 +41,9 @@ void Mtmchkin::playTurn(Player& player) {
     */
     std::shared_ptr<Card> card = m_cards.front();
     printTurnDetails(m_turnIndex, player, *card);
-    //todo play card
-    /**
-     * string outCome=card->play(player);
-     * printTurnOutCome(outCome);
-     */
+
+    (*m_cards.front()).playCard(player);
+    printTurnDetails(1,player,*m_cards.front()); // replace the 1 with the index of the player in the players queue
 
 
     //bringing the card to the back of the queue

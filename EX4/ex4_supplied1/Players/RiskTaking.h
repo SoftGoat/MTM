@@ -13,10 +13,28 @@ private:
     RiskTaking() = default; // Make constructor private to ensure singleton
 
 public:
+    /**
+     * Destructor
+    */
+   ~RiskTaking() = default;
+    /**
+     * @return shared pointer to the instance of the class
+    */
     static std::shared_ptr<RiskTaking> getInstance();
-    ~RiskTaking() = default;
+    /**
+     * @return the type of the behavior
+    */
     std::string getBehaviorName() const;
+    /**
+     * @param player the player to heal
+     * @param potionPrice the price of the potion
+     * @param potionHeal the amount of health the potion heals
+     * @return void
+    */
     void buyPotion(Player& player, int potionPrice, int potionHeal) const;
+    /**
+     * @return the type of the behavior
+    */
     BehaviorType getBehaviorType() const;
 };
 
