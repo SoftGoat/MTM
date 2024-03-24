@@ -34,4 +34,8 @@ public:
      * @return - a shared pointer to the gang card
     */
     static std::shared_ptr<Monster> buildGangCard(std::ifstream &deckFile);
+
+    private:
+        static const int MINIMUM_NUMBER_OF_GANG_MEMBERS = 2;
+
 };

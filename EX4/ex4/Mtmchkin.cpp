@@ -13,21 +13,6 @@ Mtmchkin::Mtmchkin(const string& deckPath, const string& playersPath) {
     this->m_turnIndex = 1;
 }
 
-bool biggerPlayer(const Player &player1, const Player &player2){
-    if(player1.getLevel()>player2.getLevel()){
-        return true;
-    }
-    if(player1.getLevel()<player2.getLevel()){
-        return false;
-    }
-    if(player1.getCoins()>player2.getCoins()){
-        return true;
-    }
-    if(player1.getCoins()<player2.getCoins()){
-        return false;
-    }
-    return player1.getName().compare(player2.getName())<0;
-}
 
 
 void Mtmchkin::playTurn(Player& player) {
@@ -65,7 +50,7 @@ void Mtmchkin::playRound() {
     printLeaderBoardMessage();
     
     vector<Player> sortedPlayers=m_players;
-    std::sort(sortedPlayers.begin(),sortedPlayers.end(),biggerPlayer);
+    std::sort(sortedPlayers.begin(),sortedPlayers.end());
     int i=1;
     for(Player player : sortedPlayers){
         printLeaderBoardEntry(i,player);
@@ -121,7 +106,7 @@ void Mtmchkin::play() {
         printNoWinners();
     }
     else{
-        std::sort(m_players.begin(),m_players.end(),biggerPlayer);
+        std::sort(m_players.begin(),m_players.end());
         printWinner(m_players.front());
     }
 }

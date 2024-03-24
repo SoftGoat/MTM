@@ -32,9 +32,10 @@ std::shared_ptr<Card> CardFactory::createCard(const std::string& cardName, std::
 
 std::shared_ptr<Monster> CardFactory::buildGangCard(std::ifstream &deckFile) {
     int gangSize;
-    if (!(deckFile >> gangSize)) {
+    if (!(deckFile >> gangSize) || gangSize< MINIMUM_NUMBER_OF_GANG_MEMBERS) {
         throw std::runtime_error("Invalid Cards File");
     }
+
 
     std::shared_ptr<Monster> gangCard = std::make_shared<Monster>("Gang");
     for(int i = 0; i < gangSize; i++) {

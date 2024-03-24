@@ -4,6 +4,7 @@ class Player;  // Forward declaration
 class Card {
 private:
 
+
 public:
 
     Card() = default;
