@@ -2,10 +2,13 @@
 #include "Responsible.h"
 std::shared_ptr<Responsible> Responsible::instance = nullptr;
 
-void Responsible::buyPotion(Player& player, int potionPrice, int potionHeal) const {
+int Responsible::buyPotion(Player& player, int potionPrice, int potionHeal) const {
+    int potionsBought = 0;
     while(player.getHealthPoints() < player.getMaxHealthPoints() && player.pay(potionPrice)){
         player.heal(potionHeal);
+        potionsBought++;
     }
+    return potionsBought;
 }
 string Responsible::getBehaviorName() const {
     return "Responsible";

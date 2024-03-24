@@ -295,7 +295,7 @@ std::shared_ptr<Behavior> Player::createBehavior(const std::string& behaviorName
 }
 
 string Player::getDescription() const {
-    return m_name + ", "+this->getJobName()+" with "+ this->getBehaviorName() + " behavior " + "(Level: " + std::to_string(m_level) + ", force: " + std::to_string(m_force) + ")";
+    return m_name + ", "+this->getJobName()+" with "+ this->getBehaviorName() + " behavior " + "(level " + std::to_string(m_level) + ", force " + std::to_string(m_force) + ")";
 }
 
 

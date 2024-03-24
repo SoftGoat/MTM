@@ -85,8 +85,9 @@ public:
     /**
      * Play the monster card against a player.
      * @param player - The player to play the card against.
+     * @return - A string describing the result of the card play.
      */
-    void playCard(Player &player) const;
+    string playCard(Player &player) const;
 
     /**
      * Add a member to a gang.

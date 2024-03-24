@@ -8,8 +8,8 @@ class PotionsMerchant : public Card{
         const int POTIONS_HEAL = 10;
 public:
     PotionsMerchant() = default;
-    string getDescription() const;
-    void playCard(Player &player) const;
+    string getDescription() const override;
+    string playCard(Player &player) const override;
 };
     
 

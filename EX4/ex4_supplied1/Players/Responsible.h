@@ -27,9 +27,9 @@ public:
      * @param player the player to heal
      * @param potionPrice the price of the potion
      * @param potionHeal the amount of health the potion heals
-     * @return void
+     * @return int the amount of potions bought
     */
-    void buyPotion(Player& player, int potionPrice, int potionHeal) const;
+    int buyPotion(Player& player, int potionPrice, int potionHeal) const;
     /**
      * @return the type of the behavior
     */

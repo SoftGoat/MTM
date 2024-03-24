@@ -1,10 +1,13 @@
 #include "RiskTaking.h"
 std::shared_ptr<RiskTaking> RiskTaking::instance = nullptr;
 
-void RiskTaking::buyPotion(Player& player, int potionPrice, int potionHeal) const {
+int RiskTaking::buyPotion(Player& player, int potionPrice, int potionHeal) const {
+    int potionsBought = 0;
     if (player.getHealthPoints() < MAX_HEALTH_TO_BUY_POTION && player.pay(potionPrice)) {
         player.heal(potionHeal);
+        potionsBought++;
     }
+    return potionsBought;
 }
 string RiskTaking::getBehaviorName() const {
     return "RiskTaking";

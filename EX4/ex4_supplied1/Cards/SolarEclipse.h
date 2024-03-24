@@ -7,10 +7,25 @@ private:
     const int SOLAR_NERF = 1;
     
 public:
+    /**
+     * Default constructor
+    */
     SolarEclipse() = default;
+    /**
+     * Default Destructor
+    */
     ~SolarEclipse() = default;
-    string getDescription() const;
-    void playCard(Player &player) const;
+    /**
+     *@return - the description of the card
+    */
+    string getDescription() const override;
+    /**
+     * Plays the card
+     * 
+     * @param player - the player that plays the card
+     * @return - a message that describes the result of the card
+     */
+    string playCard(Player &player) const override;
 };
     
 

@@ -40,11 +40,9 @@ void Mtmchkin::playTurn(Player& player) {
      * 4. Print the turn outcome with "printTurnOutcome"
     */
     std::shared_ptr<Card> card = m_cards.front();
-    printTurnDetails(m_turnIndex, player, *card);
-
-    (*m_cards.front()).playCard(player);
-    printTurnDetails(1,player,*m_cards.front()); // replace the 1 with the index of the player in the players queue
-
+    printTurnDetails(m_turnIndex,player,*m_cards.front());
+    string outcome = (*m_cards.front()).playCard(player);
+    printTurnOutcome(outcome);
 
     //bringing the card to the back of the queue
     m_cards.pop();
@@ -56,8 +54,10 @@ void Mtmchkin::playTurn(Player& player) {
 void Mtmchkin::playRound() {
 
     printRoundStart();
-    for (Player player : m_players){
-        playTurn(player);
+    for (Player& player : m_players){ //using reference to change the player and not a copy
+        if(!player.isKnockedOut()){
+            playTurn(player);
+        }
     }
     printRoundEnd();
 
@@ -103,9 +103,12 @@ bool Mtmchkin::totalLost() const {
 
 void Mtmchkin::play() {
     printStartMessage();
+    int inTrunIndex=0;
     for(Player player:m_players){
-        printStartPlayerEntry(m_turnIndex,player);
+        printStartPlayerEntry(m_turnIndex+inTrunIndex,player);
+        inTrunIndex++;
     }
+    inTrunIndex=0;
 
     printBarrier();
 

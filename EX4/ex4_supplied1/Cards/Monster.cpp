@@ -33,14 +33,16 @@ Monster::~Monster(){
 }
 
 
-void Monster::playCard(Player &player)const{
+string Monster::playCard(Player &player)const{
     if(player.getAttackStrength() > m_combatPower){
         player.addCoins(m_loot);
         player.levelUp();
+        return player.getName() + " won the encounter, gained " + std::to_string(m_loot) + " coins and leveled up!"; // Use std::to_string instead of to_string
     }
     else{
         player.damage(m_damage);
     }
+    return player.getName() + " lost the encounter and took " + std::to_string(m_damage) + " damage!";
 }
 
 
@@ -126,7 +128,7 @@ MonsterType Monster::getType(std::string name)const{
 
 
 string Monster::getDescription()const{
-    return "Monster: " + m_name + " (power " + std::to_string(m_combatPower) + ", loot " + std::to_string(m_loot) + ", damage " + std::to_string(m_damage)+")";
+    return  m_name + " (power " + std::to_string(m_combatPower) + ", loot " + std::to_string(m_loot) + ", damage " + std::to_string(m_damage)+")";
 }
 
 
