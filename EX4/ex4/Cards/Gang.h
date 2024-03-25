@@ -1,0 +1,42 @@
+
+
+#ifndef EX4_GANG_H
+#define EX4_GANG_H
+
+#include "EncounterCard.h"
+#include <vector>
+
+class Gang : public EncounterCard{
+    std::vector<shared_ptr<EncounterCard>> m_members;
+public:
+    Gang(int gangSize);
+
+    /**
+     * Add a member to a gang.
+     * @param name - The name of the member to add.
+     * @return void
+     */
+    void addMonster(const shared_ptr<EncounterCard> encounterCard);
+
+    /**
+     * return the attack power of the monster/gang
+     * @return the attack power of the monster/gang
+     */
+    const int getPower() const override;
+
+    /**
+     * return the loot of the monster/gang
+     * @return the loot of the monster/gang
+     */
+    const int getLoot() const override;
+
+    /**
+     * return the damage of the monster/gang
+     * @return the damage of the monster/gang
+     */
+    const int getDamage() const override;
+
+};
+
+
+#endif //EX4_GANG_H

@@ -17,6 +17,7 @@ string Sorcerer::getJobName() const {
     return "Sorcerer";
 }
 
-JobType Sorcerer::getJobType() const {
-    return JobType::Sorcerer;
+int Sorcerer::solarEclipse(Player& player) const {
+    player.buff(SOLAR_EFFECT);
+    return SOLAR_EFFECT;
 }

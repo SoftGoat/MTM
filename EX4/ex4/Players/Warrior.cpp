@@ -16,6 +16,12 @@ string Warrior::getJobName() const {
     return "Warrior";
 }
 
-JobType Warrior::getJobType() const {
-    return JobType::Warrior;
+
+
+int Warrior::solarEclipse(Player &player) const {
+    if (player.getForce()>0){
+        player.buff(SOLAR_EFFECT);
+        return SOLAR_EFFECT;
+    }
+    return 0;
 }

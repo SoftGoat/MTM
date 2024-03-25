@@ -3,8 +3,8 @@
 
 class SolarEclipse : public Card{
 private:
-    const int SOLAR_BUFF = 1;
-    const int SOLAR_NERF = 1;
+    const int WARRIOR_EFFECT = -1;
+    const int SORCERER_EFFECT = 1;
     
 public:
     /**

@@ -73,13 +73,9 @@ Player::Player(const Player& other) {
 }
 
 
-Player::~Player()
-{
-}
+Player::~Player()=default;
 
-string Player::getJobName() const {
-    return m_job->getJobName();
-}
+
 
 string Player::getBehaviorName() const {
     return m_behavior->getBehaviorName();
@@ -139,17 +135,18 @@ int Player::getLevel() const{
 
 void Player::buff(int attack) {
     if(attack>0){
-    m_force += attack;
+        m_force += attack;
     }
-    
+    else{//if attack<=0
+        if(m_force+attack>=0){//check if we can decrease the power by attack
+            m_force+=attack;
+        }
+        else{
+            m_force=0;
+        }
+    }
 }
 
-void Player::nerf(int attack) {
-    if(attack>0){
-    m_force -= attack;
-    }
-    
-}
 
 int Player::getForce()const {
     return m_force;
@@ -302,7 +299,7 @@ std::shared_ptr<Behavior> Player::createBehavior(const std::string& behaviorName
 }
 
 string Player::getDescription() const {
-    return m_name + ", "+this->getJobName()+" with "+ this->getBehaviorName() + " behavior " + "(level " + std::to_string(m_level) + ", force " + std::to_string(m_force) + ")";
+    return m_name + ", "+this->getJob()->getJobName()+" with "+ this->getBehaviorName() + " behavior " + "(level " + std::to_string(m_level) + ", force " + std::to_string(m_force) + ")";
 }
 
 

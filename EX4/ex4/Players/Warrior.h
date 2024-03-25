@@ -5,7 +5,8 @@
 
 class Warrior : public Job {
 private:
-    const int WARRIOR_BUFF = 2;
+    static const int WARRIOR_BUFF = 2;
+    static const int SOLAR_EFFECT=-1;
     Warrior() = default; // Make constructor private to ensure singleton
     static std::shared_ptr<Warrior> shared_instance;
 public:
@@ -19,13 +20,15 @@ public:
     */
     int combatPower(Player& player) const override;
     /**
+     * @param player - the player that that affected by the solar eclipse
+     * Returns the change of force the player had
+    */
+    int solarEclipse(Player &player) const override;
+    /**
      * @return the name of the job
     */
     string getJobName() const override;
-    /**
-     * @return the type of the job
-    */
-    JobType getJobType() const override;
+
     /**
      * @return shared pointer to the instance of the class
     */

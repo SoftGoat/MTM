@@ -60,7 +60,7 @@ private:
      * @param coins The number of coins the player has.
      * @return True if the input values are valid, false otherwise.
      */
-    bool inputValidation(const string name, int &level, int &force, int &hp, int &maxHp, int &coins);
+    static bool inputValidation(const string name, int &level, int &force, int &hp, int &maxHp, int &coins);
 
     /**
      * @brief Creates a job for the player.
@@ -279,12 +279,12 @@ public:
      * @return - coins of the player
     */
     int getCoins() const;
-    /*
+    /**
     * Gets the job of the player
     * @return - job of the player
     */
     shared_ptr<Job> getJob() const;
-    /*
+    /**
     * Gets the behavior of the player
     * @return - behavior of the player
     */
