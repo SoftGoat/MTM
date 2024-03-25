@@ -9,8 +9,16 @@
 class Gang : public EncounterCard{
     std::vector<shared_ptr<EncounterCard>> m_members;
 public:
+
+    /**
+     * c'tor of gang, create a new gang, in size of gangSize
+     * @param gangSize the size of the gang
+     */
     Gang(int gangSize);
 
+    ~Gang(){
+        m_members.clear();
+    }
     /**
      * Add a member to a gang.
      * @param name - The name of the member to add.
