@@ -24,7 +24,7 @@ public:
      * @param name - The name of the member to add.
      * @return void
      */
-    void addMonster(const shared_ptr<EncounterCard> encounterCard);
+    void addMonster(const shared_ptr<EncounterCard> &encounterCard);
 
     /**
      * return the attack power of the monster/gang

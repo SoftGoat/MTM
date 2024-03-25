@@ -92,25 +92,23 @@ Player& Player::operator=(const Player& other) {
 }
 
 bool Player::operator<(const Player& other) const {
-    if(m_level > other.m_level){
+    if (m_level > other.m_level) {
         return true;
     }
-    else if(m_level == other.m_level){
-        if(m_coins > other.m_coins){
-            return true;
-        }
-        else if(m_coins == other.m_coins){
-            if(m_name > other.m_name){
-                return true;
-            }
-            else{
-                return false;
-                }
-            }
-        }
-    return false;
+    if (m_level < other.m_level) {
+        return false;
     }
-
+    if (m_coins > other.m_coins) {
+        return true;
+    }
+    if (m_coins < other.m_coins) {
+        return false;
+    }
+    if (m_name < other.m_name) {
+        return true;
+    }
+    return false;
+}
 
 void Player::heal(int potion) {
     if(potion > 0){

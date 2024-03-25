@@ -3,7 +3,7 @@
 
 Gang::Gang(int gangSize) : EncounterCard("Gang of "+ std::to_string(gangSize)+" members"){}
 
-void Gang::addMonster(const shared_ptr<EncounterCard> encounterCard) {
+void Gang::addMonster(const shared_ptr<EncounterCard> &encounterCard) {
     m_members.push_back(encounterCard);
 }
 

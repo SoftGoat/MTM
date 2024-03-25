@@ -33,7 +33,6 @@ private:
     shared_ptr<Behavior> m_behavior; /**< The behavior of the player */
     static const int MAX_NAME_LENGTH=15;
     static const int MIN_NAME_LENGTH=3;
-    static bool checkNameValidation(const string name);
 
     static const string DEFAULT_NAME; /**< The default name for a player */
     static const int DEFAULT_LEVEL = 1; /**< The default level for a player */
@@ -133,7 +132,7 @@ public:
      * @param job The job of the player.
      * @param behavior The behavior of the player.
      */
-    explicit Player(const string name_, const string job, const string behavior);
+    explicit Player(const string name, const string job, const string behavior);
 
     /**
      * @brief Copy constructor.
@@ -160,10 +159,6 @@ public:
      */
     bool operator<(const Player& other) const;
 
-    /**
-     * @brief Prints the player's information.
-     */
-    void printInfo();
 
     /**
      * @brief Increases the player's level by 1, if possible.
@@ -177,13 +172,6 @@ public:
     int getLevel() const;
 
     /**
-     * @brief Get the job of the player.
-     * @return The job name of the player.
-     */
-
-    string getJobName() const;
-
-    /**
      * @brief Get the behavior of the player.
      * @return The behavior name of the player.
      */
@@ -195,11 +183,6 @@ public:
      * @param attack The amount of force to increase.
      */
     void buff(int attack);
-    /**
-     * @brief Decrease the player's force.
-     * @param attack The amount of force to increase.
-     */
-    void nerf(int attack);
 
     /**
      * @brief Increases the player's hit points by a given amount, up to the maximum hit points.

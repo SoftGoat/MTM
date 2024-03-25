@@ -6,7 +6,7 @@
 #define EX4_ENCOUNTERCARD_H
 
 #include "Card.h"
-#include "Player.h"
+#include "../Players/Player.h"
 
 class EncounterCard :public Card{
 protected:
@@ -19,6 +19,8 @@ public:
     EncounterCard(const std::string& name) {
         m_name = name;
     }
+
+    ~EncounterCard()=default;
 
     /**
      * Gets the description of the card

@@ -4,7 +4,6 @@
 #include <iostream>
 #include <vector>
 #include "EncounterCard.h"
-#include "../Players/Player.h" // Include header for Player class
 
 
 class Monster : public EncounterCard { // Monster class inherits from Card class
