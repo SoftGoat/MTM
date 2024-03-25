@@ -6,7 +6,7 @@
 class Warrior : public Job {
 private:
     static const int WARRIOR_BUFF = 2;
-    static const int SOLAR_EFFECT=-1;
+    static const int SOLAR_EFFECT_WARRIOR=-1;
     Warrior() = default; // Make constructor private to ensure singleton
     static std::shared_ptr<Warrior> shared_instance;
 public:

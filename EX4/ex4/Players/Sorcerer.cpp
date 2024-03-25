@@ -18,6 +18,6 @@ string Sorcerer::getJobName() const {
 }
 
 int Sorcerer::solarEclipse(Player& player) const {
-    player.buff(SOLAR_EFFECT);
-    return SOLAR_EFFECT;
+    player.buff(SOLAR_EFFECT_SORCERER);
+    return SOLAR_EFFECT_SORCERER;
 }

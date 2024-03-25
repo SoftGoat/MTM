@@ -16,10 +16,12 @@ public:
      * c'tor of Encounter card, initial the name of the encounter card
      * @param name - the name of the monster/gang
      */
-    EncounterCard(const std::string& name) {
-        m_name = name;
-    }
+    EncounterCard(const std::string& name);
 
+
+    /**
+     * d'tor of Encounter card
+    */
     ~EncounterCard()=default;
 
     /**
@@ -27,10 +29,7 @@ public:
      *
      * @return - the description of the card
     */
-    std::string getDescription() const override{
-        int power=getPower(), loot=getLoot(), damage=getDamage();
-        return m_name+"(power "+std::to_string(power)+", loot "+std::to_string(loot)+", damage "+std::to_string((damage))+")";
-    }
+    std::string getDescription() const override;
 
     /**
     * Plays the card
@@ -38,17 +37,7 @@ public:
     * @param player - the player that plays the card
     * @return - a message that describes the result of the card - win or lose and the affect
     */
-    std::string playCard(Player &player) const override   {
-        if(player.getAttackStrength() > getPower()){
-            player.addCoins(getLoot());
-            player.levelUp();
-            return player.getName() + " won the encounter, gained " + std::to_string(getLoot()) + " coins and leveled up!";
-        }
-        else{
-            player.damage(getDamage());
-        }
-        return player.getName() + " lost the encounter and took " + std::to_string(getDamage()) + " damage!";
-    }
+    std::string playCard(Player &player) const override;
 
     /**
      * return the attack power of the monster/gang

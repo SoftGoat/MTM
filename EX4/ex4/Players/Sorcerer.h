@@ -5,7 +5,7 @@
 
 class Sorcerer : public Job {
 private:
-    static const int SOLAR_EFFECT=1;
+    static const int SOLAR_EFFECT_SORCERER=1;
     Sorcerer() = default; // Make constructor private to ensure singleton
     static std::shared_ptr<Sorcerer> shared_instance;
 

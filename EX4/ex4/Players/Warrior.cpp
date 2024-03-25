@@ -20,8 +20,8 @@ string Warrior::getJobName() const {
 
 int Warrior::solarEclipse(Player &player) const {
     if (player.getForce()>0){
-        player.buff(SOLAR_EFFECT);
-        return SOLAR_EFFECT;
+        player.buff(SOLAR_EFFECT_WARRIOR);
+        return SOLAR_EFFECT_WARRIOR;
     }
     return 0;
 }
