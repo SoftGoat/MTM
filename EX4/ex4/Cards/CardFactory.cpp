@@ -3,19 +3,6 @@
 
 
 
-std::shared_ptr<Card> CardFactory::createCard(const std::string& cardName) {
-    if (cardName == "Goblin" || cardName == "Gang" || cardName == "Dragon" || cardName == "Giant") {
-        return std::make_shared<Monster>(cardName);
-    } else if (cardName == "Potions Merchant") {
-        return std::make_shared<PotionsMerchant>();
-    } else if (cardName == "Solar Eclipse") {
-        return std::make_shared<SolarEclipse>();
-    }
-    throw std::runtime_error("Invalid Cards File");
-    return nullptr;
-}
-
-
 std::shared_ptr<Card> CardFactory::createCard(const std::string& cardName, std::ifstream &deckFile) {
     if (cardName == "Goblin" || cardName == "Dragon" || cardName == "Giant") {
         return std::make_shared<Monster>(cardName);

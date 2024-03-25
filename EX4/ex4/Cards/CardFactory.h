@@ -15,14 +15,6 @@ public:
      * Creates a card by the given name
      * 
      * @param cardName - the name of the card
-     * @return - a shared pointer to the card
-     * @throw invalid_argument - if the card name is unknown
-     */
-    static std::shared_ptr<Card> createCard(const std::string& cardName);
-    /**
-     * Creates a card by the given name
-     * 
-     * @param cardName - the name of the card
      * @param deckFile - the deck file
      * @return - a shared pointer to the card
      * @throw invalid_argument - if the card name is unknown
