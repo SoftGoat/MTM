@@ -8,6 +8,9 @@
 
 class Gang : public EncounterCard{
     std::vector<shared_ptr<EncounterCard>> m_members;
+    int m_damage;
+    int m_loot;
+    int m_power;
 public:
 
     /**

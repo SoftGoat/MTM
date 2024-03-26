@@ -23,7 +23,7 @@ private:
     std::queue<std::shared_ptr<Card>> m_cards;
     static const int MAX_PLAYERS=6;
     static const int MIN_PLAYERS=2;
-    static const int MIN_CARDS=5;
+    static const int MIN_CARDS=2;
     /**
      * Playes a single turn for a player
      * 
