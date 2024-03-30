@@ -27,6 +27,7 @@
             player.damage(getDamage());
         }
         return player.getName() + " lost the encounter and took " + std::to_string(getDamage()) + " damage!";
+<<<<<<< HEAD
     }
 
 
@@ -34,3 +35,6 @@
 
 
 
+=======
+ 
+>>>>>>> 002c01a21225c53c1bfe43fa3628b8e89433d9bf

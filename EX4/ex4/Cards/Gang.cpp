@@ -1,32 +1,27 @@
 
 #include "Gang.h"
 
-Gang::Gang(int gangSize) : EncounterCard("Gang of "+ std::to_string(gangSize)+" members"){}
+Gang::Gang(int gangSize) : EncounterCard("Gang of " + std::to_string(gangSize) + " members") {
+    m_damage = 0;
+    m_loot = 0;
+    m_power = 0;
+}
 
 void Gang::addMonster(const shared_ptr<EncounterCard> &encounterCard) {
     m_members.push_back(encounterCard);
+    m_power += encounterCard->getPower();
+    m_loot += encounterCard->getLoot();
+    m_damage += encounterCard->getDamage();
 }
 
 const int Gang::getPower() const {
-    int powerSum=0;
-    for(shared_ptr<EncounterCard> member:m_members){
-        powerSum+=member->getPower();
-    }
-    return powerSum;
+    return m_power;
 }
 
 const int Gang::getLoot() const {
-    int lootSum=0;
-    for(shared_ptr<EncounterCard> member:m_members){
-        lootSum+=member->getLoot();
-    }
-    return lootSum;
+    return m_loot;
 }
 
 const int Gang::getDamage() const  {
-    int damageSum=0;
-    for(shared_ptr<EncounterCard> member:m_members){
-        damageSum+=member->getDamage();
-    }
-    return damageSum;
+    return m_damage;
 }
