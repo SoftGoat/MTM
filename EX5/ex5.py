@@ -1,17 +1,19 @@
 class CaesarCipher:
     TOTAL_ALPHABET = 26
-    
+    alphabet = "abcdefghijklmnopqrstuvwxyz"
+    ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     # Constructor
     def __init__(self, key):
         self.key = key
     
-    # Encrypts a message
+    
     def encrypt(self, message):
         incremented_string = ""
         for char in message:
-            if char.isalpha():
-                    base = ord('A') if char.isupper() else ord('a')
-                    incremented_char = chr((ord(char) - base + self.key) % self.TOTAL_ALPHABET + base)
+            if char.isalpha() and char.islower():
+                    incremented_char = self.alphabet[(self.alphabet.index(char) + self.key) % self.TOTAL_ALPHABET]
+            elif char.isalpha() and char.isupper():
+                    incremented_char = self.ALPHABET[(self.ALPHABET.index(char) + self.key) % self.TOTAL_ALPHABET]
             else:
                 incremented_char = char
             incremented_string += incremented_char
@@ -39,6 +41,8 @@ class CaesarCipher:
 
 class VigenereCipher:
     TOTAL_ALPHABET = 26
+    alphabet = "abcdefghijklmnopqrstuvwxyz"
+    ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
     def __init__(self, key):
         self.key = key
@@ -47,10 +51,13 @@ class VigenereCipher:
         encrypted_string = ""
         key_index = 0
         for char in message:
-            if char.isalpha():
+            if char.isalpha() and char.islower():
                 key_value = self.key[key_index % len(self.key)]  # Get the key shift value for this position
-                base = ord('A') if char.isupper() else ord('a')
-                encrypted_char = chr((ord(char) - base + key_value) % self.TOTAL_ALPHABET + base)
+                encrypted_char = self.alphabet[(self.alphabet.index(char) + key_value) % self.TOTAL_ALPHABET]
+                key_index += 1
+            elif char.isalpha() and char.isupper():
+                key_value = self.key[key_index % len(self.key)]
+                encrypted_char = self.ALPHABET[(self.ALPHABET.index(char) + key_value) % self.TOTAL_ALPHABET]
                 key_index += 1  
             else:
                 encrypted_char = char
@@ -61,11 +68,14 @@ class VigenereCipher:
         decrypted_string = ""
         key_index = 0
         for char in encrypted_message:
-            if char.isalpha():
+            if char.isalpha() and char.islower():
                 key_value = self.key[key_index % len(self.key)]  # Get the key shift value for this position
-                base = ord('A') if char.isupper() else ord('a')
-                decrypted_char = chr((ord(char) - base - key_value) % self.TOTAL_ALPHABET + base)
+                decrypted_char = self.alphabet[(self.alphabet.index(char) - key_value) % self.TOTAL_ALPHABET]
                 key_index += 1  # Only increment key_index if an alphabet was encountered
+            elif char.isalpha() and char.isupper():
+                key_value = self.key[key_index % len(self.key)]
+                decrypted_char = self.ALPHABET[(self.ALPHABET.index(char) - key_value) % self.TOTAL_ALPHABET]
+                key_index += 1
             else:
                 decrypted_char = char
             decrypted_string += decrypted_char
